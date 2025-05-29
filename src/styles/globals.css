@@ -1,0 +1,38 @@
+/* Add any global styles that can't be handled by Tailwind */
+@import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@100;300;400;500;600;700&display=swap');
+
+html, body {
+  scroll-behavior: smooth;
+  font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 600;
+}
+
+.subheading {
+  font-family: 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 500;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #475569 #F1F5F9;
+}
+
+/* For Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #475569;
+  border-radius: 4px;
+}

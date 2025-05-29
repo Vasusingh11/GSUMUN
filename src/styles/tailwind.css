@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 600;
+  }
+  
+  .subheading {
+    font-family: 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 500;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-colors;
+    font-family: 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 500;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 bg-blue-100 text-blue-800 rounded-md hover:bg-blue-200 transition-colors;
+    font-family: 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 500;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden border border-blue-100;
+  }
+  
+  .font-heading {
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 600;
+  }
+  
+  .font-subheading {
+    font-family: 'SF Pro Rounded', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-weight: 500;
+  }
+  
+  .font-body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, system-ui, -apple-system, sans-serif;
+    font-weight: 300;
+  }
+  
+  .text-primary {
+    @apply text-blue-800;
+  }
+  
+  .text-secondary {
+    @apply text-blue-600;
+  }
+  
+  .bg-primary {
+    @apply bg-blue-800;
+  }
+  
+  .bg-secondary {
+    @apply bg-blue-50;
+  }
+  
+  .border-primary {
+    @apply border-blue-200;
+  }
+}

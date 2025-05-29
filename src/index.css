@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply text-gray-800 bg-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl;
+  }
+
+  h6 {
+    @apply text-base md:text-lg;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-colors duration-300;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors;
+  }
+
+  .btn-accent {
+    @apply bg-red-600 hover:bg-red-700 text-white;
+  }
+
+  .btn-outline {
+    @apply border-2 border-current bg-transparent;
+  }
+
+  .section {
+    @apply py-12 md:py-20;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden;
+  }
+}
+
+/* Additional custom styles */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #2563eb, #1e40af);
+}
