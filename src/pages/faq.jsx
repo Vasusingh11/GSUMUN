@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown, ChevronRight, Mail, Phone, MessageCircle, HelpCircle } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, Mail, MessageCircle, HelpCircle, Users, BookOpen, Settings, Accessibility } from 'lucide-react';
 
 const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -62,7 +62,7 @@ const FAQPage = () => {
         {
           id: 'registration-cost',
           question: 'How much does registration cost?',
-          answer: 'Registration fees are $50 per delegation plus $40 per delegate. This includes all conference materials, meals during the conference, and a conference t-shirt.'
+          answer: 'Registration fees are $50 per delegation plus $40 per delegate. This includes all conference materials and a conference t-shirt.'
         },
         {
           id: 'payment-deadline',
@@ -93,7 +93,7 @@ const FAQPage = () => {
     },
     preparation: {
       title: 'Delegate Preparation',
-      icon: <MessageCircle size={20} />,
+      icon: <BookOpen size={20} />,
       questions: [
         {
           id: 'background-guides',
@@ -129,7 +129,7 @@ const FAQPage = () => {
     },
     procedures: {
       title: 'Rules & Procedures',
-      icon: <MessageCircle size={20} />,
+      icon: <Settings size={20} />,
       questions: [
         {
           id: 'rules-of-procedure',
@@ -165,7 +165,7 @@ const FAQPage = () => {
     },
     logistics: {
       title: 'Venue & Travel',
-      icon: <Phone size={20} />,
+      icon: <Users size={20} />,
       questions: [
         {
           id: 'venue-location',
@@ -190,7 +190,7 @@ const FAQPage = () => {
         {
           id: 'meals-included',
           question: 'What meals are included?',
-          answer: 'Registration includes continental breakfast both days, lunch both days, refreshments during breaks, and light refreshments at the delegate social event.'
+          answer: 'Delegates are responsible for their own meals during the conference. Downtown Atlanta offers numerous dining options within walking distance of the venue.'
         },
         {
           id: 'nearby-restaurants',
@@ -206,7 +206,7 @@ const FAQPage = () => {
     },
     faculty: {
       title: 'Faculty Advisors',
-      icon: <Mail size={20} />,
+      icon: <Accessibility size={20} />,
       questions: [
         {
           id: 'faculty-requirements',
@@ -231,7 +231,7 @@ const FAQPage = () => {
         {
           id: 'delegate-supervision',
           question: 'How should faculty advisors supervise delegates?',
-          answer: 'Maintain active cell phone contact, check in at the Faculty Lounge during each session, be available for emergencies, and ensure delegates maintain professional conduct throughout.'
+          answer: 'Maintain active email contact, check in at the Faculty Lounge during each session, be available for emergencies, and ensure delegates maintain professional conduct throughout.'
         },
         {
           id: 'first-time-advisor',
@@ -242,17 +242,17 @@ const FAQPage = () => {
     },
     technical: {
       title: 'Technical Support',
-      icon: <Phone size={20} />,
+      icon: <MessageCircle size={20} />,
       questions: [
         {
           id: 'website-issues',
           question: 'I\'m having trouble with the website. Who can help?',
-          answer: 'For technical issues with registration or the website, contact our IT support at tech@gsumun.org or call (404) 413-1500 during business hours.'
+          answer: 'For technical issues with registration or the website, contact our IT support at digital@gsumun.org. We aim to respond within 24 hours during business days.'
         },
         {
           id: 'login-problems',
           question: 'I can\'t access my registration account.',
-          answer: 'Try resetting your password using the "Forgot Password" link. If problems persist, email tech@gsumun.org with your school name and registration details.'
+          answer: 'Try resetting your password using the "Forgot Password" link. If problems persist, email digital@gsumun.org with your school name and registration details.'
         },
         {
           id: 'document-downloads',
@@ -262,7 +262,7 @@ const FAQPage = () => {
         {
           id: 'payment-processing',
           question: 'My payment didn\'t go through. What should I do?',
-          answer: 'Check with your bank about transaction limits and try again. For continued issues, contact our finance team at finance@gsumun.org with your transaction details.'
+          answer: 'Check with your bank about transaction limits and try again. For continued issues, contact our registration team at registration@gsumun.org with your transaction details.'
         },
         {
           id: 'email-notifications',
@@ -290,12 +290,12 @@ const FAQPage = () => {
   const filteredAllQuestions = filterQuestions(allQuestions);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gray-50 pt-16" style={{ fontFamily: 'SF Pro Display Light, system-ui, sans-serif' }}>
       {/* Header Section */}
-      <section className="bg-blue-800 text-white py-16 px-4">
+      <section className="text-white py-16 px-4" style={{ backgroundColor: '#29487D' }}>
         <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl font-bold mb-4">Frequently Asked Questions</h1>
-          <p className="text-xl mb-8">
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: 'SF Pro Display Bold, system-ui, sans-serif' }}>Frequently Asked Questions</h1>
+          <p className="text-xl mb-8" style={{ fontFamily: 'SF Pro Display Light, system-ui, sans-serif' }}>
             Find answers to common questions about GSUMUN 2025. Can't find what you're looking for? Contact us!
           </p>
           
@@ -310,7 +310,11 @@ const FAQPage = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search FAQs..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:border-opacity-50 text-gray-900"
+                style={{ 
+                  fontFamily: 'Helvetica Neue, system-ui, sans-serif',
+                  '--tw-ring-color': '#3C5898'
+                }}
               />
             </div>
           </div>
@@ -324,10 +328,10 @@ const FAQPage = () => {
           {/* Search Results */}
           {searchTerm && (
             <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-4">Search Results ({filteredAllQuestions.length})</h2>
+              <h2 className="text-2xl font-bold mb-4" style={{ fontFamily: 'SF Pro Display Bold, system-ui, sans-serif' }}>Search Results ({filteredAllQuestions.length})</h2>
               {filteredAllQuestions.length === 0 ? (
                 <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                  <p className="text-gray-500">No questions found matching "{searchTerm}". Try different keywords or browse categories below.</p>
+                  <p className="text-gray-500" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>No questions found matching "{searchTerm}". Try different keywords or browse categories below.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -338,8 +342,8 @@ const FAQPage = () => {
                         className="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-gray-50"
                       >
                         <div>
-                          <h3 className="font-medium text-gray-900">{question.question}</h3>
-                          <p className="text-sm text-blue-600">{question.category}</p>
+                          <h3 className="font-medium text-gray-900" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>{question.question}</h3>
+                          <p className="text-sm" style={{ color: '#3C5898', fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>{question.category}</p>
                         </div>
                         {expandedQuestions[question.id] ? 
                           <ChevronDown size={20} className="text-gray-400" /> : 
@@ -348,7 +352,7 @@ const FAQPage = () => {
                       </button>
                       {expandedQuestions[question.id] && (
                         <div className="px-6 pb-4">
-                          <p className="text-gray-600">{question.answer}</p>
+                          <p className="text-gray-600" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>{question.answer}</p>
                         </div>
                       )}
                     </div>
@@ -362,7 +366,7 @@ const FAQPage = () => {
           {!searchTerm && (
             <>
               <div className="mb-8">
-                <h2 className="text-2xl font-bold mb-6">Browse by Category</h2>
+                <h2 className="text-2xl font-bold mb-6" style={{ fontFamily: 'SF Pro Display Bold, system-ui, sans-serif' }}>Browse by Category</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {Object.entries(faqData).map(([key, category]) => (
                     <button
@@ -370,15 +374,19 @@ const FAQPage = () => {
                       onClick={() => setActiveCategory(key)}
                       className={`p-4 rounded-lg border-2 transition-colors ${
                         activeCategory === key
-                          ? 'border-blue-600 bg-blue-50 text-blue-700'
+                          ? 'bg-blue-50 text-blue-700'
                           : 'border-gray-200 bg-white text-gray-700 hover:border-blue-300'
                       }`}
+                      style={{
+                        borderColor: activeCategory === key ? '#3C5898' : '',
+                        backgroundColor: activeCategory === key ? '#f8f9ff' : ''
+                      }}
                     >
-                      <div className="flex items-center justify-center mb-2">
+                      <div className="flex items-center justify-center mb-2" style={{ color: activeCategory === key ? '#29487D' : '' }}>
                         {category.icon}
                       </div>
-                      <p className="font-medium text-sm">{category.title}</p>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="font-medium text-sm" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>{category.title}</p>
+                      <p className="text-xs text-gray-500 mt-1" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>
                         {category.questions.length} questions
                       </p>
                     </button>
@@ -389,8 +397,10 @@ const FAQPage = () => {
               {/* FAQ Questions by Category */}
               <div className="bg-white rounded-lg shadow-md">
                 <div className="border-b border-gray-200 px-6 py-4">
-                  <h3 className="text-xl font-semibold flex items-center">
-                    {faqData[activeCategory].icon}
+                  <h3 className="text-xl font-semibold flex items-center" style={{ fontFamily: 'SF Pro Display Bold, system-ui, sans-serif' }}>
+                    <span style={{ color: '#29487D' }}>
+                      {faqData[activeCategory].icon}
+                    </span>
                     <span className="ml-2">{faqData[activeCategory].title}</span>
                   </h3>
                 </div>
@@ -402,7 +412,7 @@ const FAQPage = () => {
                         onClick={() => toggleQuestion(question.id)}
                         className="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-gray-50"
                       >
-                        <h4 className="font-medium text-gray-900">{question.question}</h4>
+                        <h4 className="font-medium text-gray-900" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>{question.question}</h4>
                         {expandedQuestions[question.id] ? 
                           <ChevronDown size={20} className="text-gray-400 flex-shrink-0 ml-4" /> : 
                           <ChevronRight size={20} className="text-gray-400 flex-shrink-0 ml-4" />
@@ -410,7 +420,7 @@ const FAQPage = () => {
                       </button>
                       {expandedQuestions[question.id] && (
                         <div className="px-6 pb-4">
-                          <p className="text-gray-600">{question.answer}</p>
+                          <p className="text-gray-600" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>{question.answer}</p>
                         </div>
                       )}
                     </div>
@@ -421,43 +431,50 @@ const FAQPage = () => {
           )}
 
           {/* Contact Section */}
-          <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-8">
+          <div className="mt-12 border rounded-lg p-8" style={{ backgroundColor: '#f8f9ff', borderColor: '#D4D8E8' }}>
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-blue-800 mb-2">Still Have Questions?</h2>
-              <p className="text-blue-700">Our team is here to help! Don't hesitate to reach out.</p>
+              <h2 className="text-2xl font-bold mb-2" style={{ color: '#29487D', fontFamily: 'SF Pro Display Bold, system-ui, sans-serif' }}>Still Have Questions?</h2>
+              <p style={{ color: '#3C5898', fontFamily: 'SF Pro Display Light, system-ui, sans-serif' }}>Our team is here to help! Don't hesitate to reach out.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="text-center">
-                <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <div className="text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: '#29487D' }}>
                   <Mail size={20} />
                 </div>
-                <h3 className="font-medium mb-2">General Questions</h3>
-                <p className="text-sm text-gray-600 mb-2">For registration, logistics, and general inquiries</p>
-                <a href="mailto:sg@gsumun.org" className="text-blue-600 hover:underline">
+                <h3 className="font-medium mb-2" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>General Questions</h3>
+                <p className="text-sm text-gray-600 mb-2" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>For registration, logistics, and general inquiries</p>
+                <a 
+                  href="mailto:sg@gsumun.org" 
+                  className="transition"
+                  style={{ 
+                    color: '#3C5898',
+                    fontFamily: 'SF Pro Display, system-ui, sans-serif'
+                  }}
+                  onMouseEnter={(e) => e.target.style.color = '#29487D'}
+                  onMouseLeave={(e) => e.target.style.color = '#3C5898'}
+                >
                   sg@gsumun.org
                 </a>
               </div>
               
               <div className="text-center">
-                <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
-                  <Phone size={20} />
-                </div>
-                <h3 className="font-medium mb-2">Phone Support</h3>
-                <p className="text-sm text-gray-600 mb-2">Available Monday-Friday, 9 AM - 5 PM EST</p>
-                <a href="tel:+14044131500" className="text-blue-600 hover:underline">
-                  (404) 413-1500
-                </a>
-              </div>
-              
-              <div className="text-center">
-                <div className="bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                <div className="text-white rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3" style={{ backgroundColor: '#3C5898' }}>
                   <MessageCircle size={20} />
                 </div>
-                <h3 className="font-medium mb-2">Technical Issues</h3>
-                <p className="text-sm text-gray-600 mb-2">Website, registration, or payment problems</p>
-                <a href="mailto:tech@gsumun.org" className="text-blue-600 hover:underline">
-                  tech@gsumun.org
+                <h3 className="font-medium mb-2" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>Technical Issues</h3>
+                <p className="text-sm text-gray-600 mb-2" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>Website, registration, or payment problems</p>
+                <a 
+                  href="mailto:digital@gsumun.org" 
+                  className="transition"
+                  style={{ 
+                    color: '#3C5898',
+                    fontFamily: 'SF Pro Display, system-ui, sans-serif'
+                  }}
+                  onMouseEnter={(e) => e.target.style.color = '#29487D'}
+                  onMouseLeave={(e) => e.target.style.color = '#3C5898'}
+                >
+                  digital@gsumun.org
                 </a>
               </div>
             </div>
@@ -466,31 +483,58 @@ const FAQPage = () => {
           {/* Quick Links */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold mb-3">New to Model UN?</h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <h3 className="font-semibold mb-3" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>New to Model UN?</h3>
+              <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>
                 Check out our comprehensive delegate guide and preparation resources.
               </p>
-              <a href="/delegate-guide" className="text-blue-600 hover:underline text-sm font-medium">
+              <a 
+                href="/delegate-guide" 
+                className="text-sm font-medium transition"
+                style={{ 
+                  color: '#3C5898',
+                  fontFamily: 'SF Pro Display, system-ui, sans-serif'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#29487D'}
+                onMouseLeave={(e) => e.target.style.color = '#3C5898'}
+              >
                 View Delegate Guide →
               </a>
             </div>
             
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold mb-3">Faculty Advisors</h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <h3 className="font-semibold mb-3" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>Faculty Advisors</h3>
+              <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>
                 Find detailed information about preparing your delegation and conference logistics.
               </p>
-              <a href="/faculty-guide" className="text-blue-600 hover:underline text-sm font-medium">
+              <a 
+                href="/faculty-guide" 
+                className="text-sm font-medium transition"
+                style={{ 
+                  color: '#3C5898',
+                  fontFamily: 'SF Pro Display, system-ui, sans-serif'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#29487D'}
+                onMouseLeave={(e) => e.target.style.color = '#3C5898'}
+              >
                 View Faculty Guide →
               </a>
             </div>
             
             <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="font-semibold mb-3">Ready to Register?</h3>
-              <p className="text-sm text-gray-600 mb-4">
+              <h3 className="font-semibold mb-3" style={{ fontFamily: 'SF Pro Display, system-ui, sans-serif' }}>Ready to Register?</h3>
+              <p className="text-sm text-gray-600 mb-4" style={{ fontFamily: 'Helvetica Neue, system-ui, sans-serif' }}>
                 Start your registration process and secure your delegation's spot at GSUMUN 2025.
               </p>
-              <a href="/register" className="text-blue-600 hover:underline text-sm font-medium">
+              <a 
+                href="/register" 
+                className="text-sm font-medium transition"
+                style={{ 
+                  color: '#3C5898',
+                  fontFamily: 'SF Pro Display, system-ui, sans-serif'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#29487D'}
+                onMouseLeave={(e) => e.target.style.color = '#3C5898'}
+              >
                 Register Now →
               </a>
             </div>

@@ -7,22 +7,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        blue: {
-          600: '#2563eb', // Primary brand color
-          700: '#1d4ed8',
-          800: '#162c74',
-          900: '#1e3a8a',
-          950: '#172554'
+        brand: {
+          blue: '#29487D', // Primary
+          blueLight: '#D4D8E8', // Light
+          blueAlt: '#3C5898', // Alternate
         },
-        amber: {
-          600: '#d97706', // Secondary brand color
-        },
-        red: {
-          600: '#dc2626', // Accent color
-        }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: [
+          'SF Pro Display',
+          'Myriad Pro',
+          'Helvetica Neue',
+          'Gill Sans',
+          'Arial',
+          'sans-serif',
+        ],
       },
       container: {
         center: true,

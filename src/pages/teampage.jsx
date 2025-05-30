@@ -49,7 +49,7 @@ const TeamPage = () => {
       id: 8,
       name: "Vasu Singh",
       position: "Under Secretary-General of Digital Infrastructure",
-      image: "/images/secretariat/vasu-singh.jpg"
+      image: "/images/secretariat/vasu-singh.png"
     }
   ];
 

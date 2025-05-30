@@ -4,16 +4,17 @@
 
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif;
     scroll-behavior: smooth;
   }
 
   body {
-    @apply text-gray-800 bg-white;
+    @apply text-[color:var(--tw-brand-blue)] bg-white;
   }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold;
+    font-family: 'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif;
   }
 
   h1 {
@@ -44,14 +45,15 @@
 @layer components {
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 rounded-md font-medium transition-colors duration-300;
+    font-family: 'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif;
   }
 
   .btn-primary {
-    @apply px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors;
+    @apply px-4 py-2 bg-[color:var(--tw-brand-blue)] text-white rounded-md hover:bg-[color:var(--tw-brand-blueAlt)] transition-colors;
   }
 
   .btn-secondary {
-    @apply px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition-colors;
+    @apply px-4 py-2 bg-[color:var(--tw-brand-blueLight)] text-[color:var(--tw-brand-blue)] rounded-md hover:bg-[color:var(--tw-brand-blueAlt)] transition-colors;
   }
 
   .btn-accent {
@@ -76,5 +78,5 @@
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, #2563eb, #1e40af);
+  background-image: linear-gradient(to right, #29487D, #3C5898);
 }

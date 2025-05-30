@@ -6,10 +6,22 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({});
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState({});
 
   // Navigation links with dropdowns
   const navLinks = [
     { name: 'Home', path: '/' },
+    {
+      name: 'About',
+      path: '#',
+      dropdown: [
+        { name: 'GSUMUN', path: '/about' },
+        { name: 'Advisory Board', path: '/advisory-board' },
+        { name: 'Secretariat', path: '/secretariat' },
+        { name: 'Team', path: '/team' },
+        { name: 'Contact', path: '/contact' },
+      ]
+    },
     { 
       name: 'Conference', 
       path: '#',
@@ -30,18 +42,14 @@ const Navbar = () => {
         { name: 'Position Papers', path: '/resources/position-papers' },
       ]
     },
-    {
-      name: 'About',
-      path: '#',
-      dropdown: [
-        { name: 'GSUMUN', path: '/about' },
-        { name: 'Secretariat', path: '/secretariat' },
-        { name: 'Advisory Board', path: '/advisory-board' },
-        { name: 'Contact', path: '/contact' },
-      ]
-    },
+    { name: 'RSA', path: '/rsa' },
     { name: 'Register', path: '/register', highlight: true },
   ];
+
+  const navFont = {
+    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
+    fontWeight: 400
+  };
 
   // Handle scroll for navbar background
   useEffect(() => {
@@ -60,18 +68,30 @@ const Navbar = () => {
     };
   }, []);
 
-  // Toggle dropdown for specific menu item
-  const toggleDropdown = (index) => {
+  // Toggle dropdown for desktop
+  const toggleDropdown = (index, e) => {
+    e.stopPropagation();
     setDropdownOpen((prev) => ({
       ...prev,
       [index]: !prev[index]
     }));
   };
 
-  // Close dropdown when clicking outside
+  // Toggle dropdown for mobile
+  const toggleMobileDropdown = (index) => {
+    setMobileDropdownOpen((prev) => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  // Close desktop dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setDropdownOpen({});
+    const handleClickOutside = (e) => {
+      // Only close if not clicking on dropdown elements
+      if (!e.target.closest('.dropdown-container')) {
+        setDropdownOpen({});
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -80,22 +100,50 @@ const Navbar = () => {
     };
   }, []);
 
-  // Prevent event propagation to allow clicking inside dropdown
-  const handleDropdownClick = (e) => {
-    e.stopPropagation();
+  // Close mobile menu when route changes
+  const closeMobileMenu = () => {
+    setIsOpen(false);
+    setMobileDropdownOpen({});
   };
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   return (
     <nav 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
-      }`}
+      className="fixed w-full z-50 shadow-md py-2"
+      style={{ 
+        backgroundColor: 'white',
+        fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif'
+      }}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <div className={`font-bold text-2xl ${scrolled ? 'text-blue-800' : 'text-white'}`}>
+          <Link to="/" className="flex items-center space-x-3" onClick={closeMobileMenu}>
+            <img 
+              src="/images/gsumun-logo.png" 
+              alt="GSUMUN Logo" 
+              className="h-12 w-12 object-contain rounded-full bg-white bg-opacity-20"
+            />
+            <div 
+              className="font-bold text-2xl"
+              style={{ 
+                color: '#29487D',
+                fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
+                fontWeight: 700
+              }}
+            >
               GSUMUN
             </div>
           </Link>
@@ -105,33 +153,41 @@ const Navbar = () => {
             {navLinks.map((link, index) => (
               <div 
                 key={index} 
-                className="relative"
-                onClick={handleDropdownClick}
+                className="relative dropdown-container"
               >
                 {link.dropdown ? (
                   <div>
                     <button
-                      onClick={() => toggleDropdown(index)}
-                      className={`flex items-center space-x-1 font-medium ${
-                        scrolled ? 'text-gray-800 hover:text-blue-600' : 'text-white hover:text-gray-200'
-                      } ${link.highlight ? 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md' : ''}`}
+                      onClick={(e) => toggleDropdown(index, e)}
+                      className="flex items-center space-x-1 text-xl px-4 py-2 rounded-md hover:bg-gray-100"
+                      style={{
+                        color:'#29487D',
+                        ...navFont,
+                        fontSize: '18px'
+                      }}
                     >
                       <span>{link.name}</span>
-                      <ChevronDown size={16} />
+                      <ChevronDown 
+                        size={18} 
+                        className={`${
+                          dropdownOpen[index] ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
                     
                     {dropdownOpen[index] && (
-                      <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-20">
+                      <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-20 border border-gray-200">
                         <div className="py-2">
                           {link.dropdown.map((dropdownItem, dropdownIndex) => (
                             <NavLink
                               key={dropdownIndex}
                               to={dropdownItem.path}
-                              className={({ isActive }) => 
-                                `block px-4 py-2 text-sm text-gray-800 hover:bg-blue-50 hover:text-blue-600 ${
-                                  isActive ? 'bg-blue-50 text-blue-600' : ''
-                                }`
-                              }
+                              className="block px-4 py-2 text-base hover:bg-gray-100"
+                              style={{ 
+                                color: '#29487D',
+                                fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
+                                fontSize: '16px'
+                              }}
                               onClick={() => setDropdownOpen({})}
                             >
                               {dropdownItem.name}
@@ -144,19 +200,13 @@ const Navbar = () => {
                 ) : (
                   <NavLink
                     to={link.path}
-                    className={({ isActive }) => 
-                      `font-medium ${
-                        link.highlight 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md' 
-                          : isActive 
-                            ? scrolled 
-                              ? 'text-blue-600' 
-                              : 'text-blue-300'
-                            : scrolled 
-                              ? 'text-gray-800 hover:text-blue-600' 
-                              : 'text-white hover:text-gray-200'
-                      }`
-                    }
+                    className="text-xl px-4 py-2 rounded-md"
+                    style={{
+                      color: link.highlight ? 'white' : '#29487D',
+                      backgroundColor: link.highlight ? '#3C5898' : 'transparent',
+                      ...navFont,
+                      fontSize: '18px'
+                    }}
                   >
                     {link.name}
                   </NavLink>
@@ -167,88 +217,95 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden text-gray-600"
+            className="lg:hidden p-2 rounded-md z-50"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <X size={24} className={scrolled ? 'text-blue-800' : 'text-white'} />
+              <X size={26} style={{ color: scrolled ? '#29487D' : 'white' }} />
             ) : (
-              <Menu size={24} className={scrolled ? 'text-blue-800' : 'text-white'} />
+              <Menu size={26} style={{ color: scrolled ? '#29487D' : 'white' }} />
             )}
           </button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={`lg:hidden fixed inset-0 z-50 bg-white transition-transform duration-300 ease-in-out transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
-        <div className="flex justify-end p-4">
-          <button onClick={() => setIsOpen(false)}>
-            <X size={24} className="text-gray-800" />
-          </button>
-        </div>
-        <div className="p-4">
-          <div className="flex flex-col space-y-3">
-            {navLinks.map((link, index) => (
-              <div key={index} className="py-2">
-                {link.dropdown ? (
-                  <div>
-                    <button
-                      onClick={() => toggleDropdown(index)}
-                      className="flex items-center justify-between w-full text-left font-medium text-gray-800 hover:text-blue-600 py-2"
-                    >
-                      <span>{link.name}</span>
-                      {dropdownOpen[index] ? (
-                        <ChevronDown size={16} />
-                      ) : (
-                        <ChevronRight size={16} />
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto"
+          style={{ 
+            fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
+            paddingTop: '80px' // Account for fixed header
+          }}
+        >
+          <div className="px-4 pb-6">
+            <div className="flex flex-col space-y-2">
+              {navLinks.map((link, index) => (
+                <div key={index} className="border-b border-gray-100 last:border-b-0">
+                  {link.dropdown ? (
+                    <div>
+                      <button
+                        onClick={() => toggleMobileDropdown(index)}
+                        className="flex items-center justify-between w-full text-left py-4 px-2 rounded-md hover:bg-gray-50"
+                        style={{ 
+                          color: '#29487D',
+                          ...navFont,
+                          fontSize: '18px'
+                        }}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronRight 
+                          size={18} 
+                          className={`${
+                            mobileDropdownOpen[index] ? 'rotate-90' : ''
+                          }`}
+                        />
+                      </button>
+                      
+                      {mobileDropdownOpen[index] && (
+                        <div className="ml-4 pb-2 space-y-1">
+                          {link.dropdown.map((dropdownItem, dropdownIndex) => (
+                            <NavLink
+                              key={dropdownIndex}
+                              to={dropdownItem.path}
+                              className="block py-3 px-4 rounded-md hover:bg-gray-50"
+                              style={{ 
+                                color: '#29487D',
+                                fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
+                                fontSize: '16px'
+                              }}
+                              onClick={closeMobileMenu}
+                            >
+                              {dropdownItem.name}
+                            </NavLink>
+                          ))}
+                        </div>
                       )}
-                    </button>
-                    
-                    {dropdownOpen[index] && (
-                      <div className="ml-4 mt-2 border-l-2 border-gray-200 pl-4 flex flex-col space-y-2">
-                        {link.dropdown.map((dropdownItem, dropdownIndex) => (
-                          <NavLink
-                            key={dropdownIndex}
-                            to={dropdownItem.path}
-                            className={({ isActive }) => 
-                              `py-2 text-sm ${
-                                isActive ? 'text-blue-600 font-medium' : 'text-gray-700 hover:text-blue-600'
-                              }`
-                            }
-                            onClick={() => setIsOpen(false)}
-                          >
-                            {dropdownItem.name}
-                          </NavLink>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <NavLink
-                    to={link.path}
-                    className={({ isActive }) => 
-                      `block py-2 font-medium ${
-                        link.highlight 
-                          ? 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-center' 
-                          : isActive 
-                            ? 'text-blue-600' 
-                            : 'text-gray-800 hover:text-blue-600'
-                      }`
-                    }
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </NavLink>
-                )}
-              </div>
-            ))}
+                    </div>
+                  ) : (
+                    <NavLink
+                      to={link.path}
+                      className={`block py-4 px-2 rounded-md ${
+                        link.highlight ? 'mx-2 my-2' : ''
+                      }`}
+                      style={{
+                        color: link.highlight ? 'white' : '#29487D',
+                        backgroundColor: link.highlight ? '#3C5898' : 'transparent',
+                        ...navFont,
+                        fontSize: '18px',
+                        textAlign: link.highlight ? 'center' : 'left'
+                      }}
+                      onClick={closeMobileMenu}
+                    >
+                      {link.name}
+                    </NavLink>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 };

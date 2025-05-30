@@ -65,59 +65,36 @@ const VenuePage = () => {
   ];
 
   return (
-    <div 
-      className="min-h-screen pt-16"
-      style={{ 
-        backgroundColor: '#F9F9F9',
-        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-      }}
-    >
+    <div className="min-h-screen pt-16 bg-gray-50" style={{ fontFamily: 'Inter, system-ui, -apple-system, sans-serif' }}>
       {/* Hero Section */}
-      <section 
-        className="text-white py-16 px-4"
-        style={{ backgroundColor: '#29487D' }}
-      >
+      <section className="text-white py-20 px-4" style={{ background: 'linear-gradient(135deg, #29487D 0%, #3C5898 100%)' }}>
         <div className="container mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h1 
-                className="text-4xl font-bold mb-4"
-                style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-              >
+              <h1 className="text-5xl font-bold mb-6 leading-tight">
                 Conference Venue
               </h1>
-              <p 
-                className="text-xl mb-6"
-                style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-              >
+              <p className="text-xl mb-8 text-blue-100 leading-relaxed">
                 GSUMUN 2025 will be held at the Georgia State University Student Center, 
                 located in the heart of downtown Atlanta.
               </p>
-              <div className="flex items-center mb-4">
-                <MapPin className="mr-3" size={20} />
+              <div className="flex items-start mb-6 bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                <MapPin className="mr-4 mt-1 text-blue-200" size={24} />
                 <div>
-                  <p 
-                    className="font-medium mb-2"
-                    style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                  >
+                  <p className="font-semibold mb-2 text-lg">
                     Georgia State University Student Center
                   </p>
-                  <p 
-                    style={{ 
-                      color: '#D4D8E8',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <p className="text-blue-200">
                     55 Gilmer Street SE, Atlanta, GA 30303
                   </p>
                 </div>
               </div>
             </div>
-            <div className="bg-white rounded-lg overflow-hidden shadow-lg">
+            <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
               <img 
                 src="/api/placeholder/500/300" 
                 alt="GSU Student Center"
-                className="w-full h-64 object-cover"
+                className="w-full h-72 object-cover"
               />
             </div>
           </div>
@@ -125,7 +102,7 @@ const VenuePage = () => {
       </section>
 
       {/* Navigation Tabs */}
-      <section className="bg-white border-b sticky top-16 z-10" style={{ borderColor: '#D4D8E8' }}>
+      <section className="bg-white border-b border-gray-200 sticky top-16 z-10 shadow-sm">
         <div className="container mx-auto max-w-6xl px-4">
           <nav className="flex space-x-8 overflow-x-auto">
             {[
@@ -139,22 +116,11 @@ const VenuePage = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`py-4 px-2 border-b-2 font-medium text-base whitespace-nowrap transition-colors duration-200`}
-                style={{ 
-                  borderBottomColor: activeTab === tab.id ? '#29487D' : 'transparent',
-                  color: activeTab === tab.id ? '#29487D' : '#6B7280',
-                  fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                }}
-                onMouseEnter={(e) => {
-                  if (activeTab !== tab.id) {
-                    e.target.style.color = '#3C5898';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (activeTab !== tab.id) {
-                    e.target.style.color = '#6B7280';
-                  }
-                }}
+                className={`py-4 px-2 border-b-3 font-semibold text-base whitespace-nowrap transition-all duration-200 ${
+                  activeTab === tab.id 
+                    ? 'border-blue-600 text-blue-600' 
+                    : 'border-transparent text-gray-600 hover:text-blue-500 hover:border-blue-300'
+                }`}
               >
                 {tab.label}
               </button>
@@ -164,206 +130,80 @@ const VenuePage = () => {
       </section>
 
       {/* Content Sections */}
-      <section className="py-12 px-4">
+      <section className="py-16 px-4">
         <div className="container mx-auto max-w-6xl">
           
           {/* Overview Tab */}
           {activeTab === 'overview' && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-12">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <div>
-                  <h2 
-                    className="text-3xl font-bold mb-6"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <h2 className="text-4xl font-bold mb-8 text-gray-900">
                     About the Venue
                   </h2>
-                  <p 
-                    className="mb-4"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <p className="mb-6 text-gray-700 text-lg leading-relaxed">
                     The Georgia State University Student Center is a modern, state-of-the-art facility 
                     located in downtown Atlanta. This premier venue offers excellent meeting spaces, 
                     advanced technology, and convenient amenities for our conference delegates.
                   </p>
-                  <p 
-                    className="mb-6"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <p className="mb-8 text-gray-700 text-lg leading-relaxed">
                     The Student Center features multiple committee rooms, a large assembly hall for 
                     opening and closing ceremonies, dining facilities, and comfortable spaces for 
                     networking and collaboration.
                   </p>
                   
-                  <h3 
-                    className="text-xl font-semibold mb-4"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
                     Conference Facilities
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div 
-                      className="flex items-center p-3 rounded-lg"
-                      style={{ backgroundColor: '#D4D8E8' }}
-                    >
-                      <Users style={{ color: '#29487D' }} className="mr-3" size={20} />
-                      <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                        15 Committee Rooms
-                      </span>
-                    </div>
-                    <div 
-                      className="flex items-center p-3 rounded-lg"
-                      style={{ backgroundColor: '#D4D8E8' }}
-                    >
-                      <Wifi style={{ color: '#29487D' }} className="mr-3" size={20} />
-                      <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                        Complimentary WiFi
-                      </span>
-                    </div>
-                    <div 
-                      className="flex items-center p-3 rounded-lg"
-                      style={{ backgroundColor: '#D4D8E8' }}
-                    >
-                      <Clock style={{ color: '#29487D' }} className="mr-3" size={20} />
-                      <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                        24/7 Security
-                      </span>
-                    </div>
-                    <div 
-                      className="flex items-center p-3 rounded-lg"
-                      style={{ backgroundColor: '#D4D8E8' }}
-                    >
-                      <Utensils style={{ color: '#29487D' }} className="mr-3" size={20} />
-                      <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                        On-site Dining
-                      </span>
-                    </div>
+                    {[
+                      { icon: Users, text: '15 Committee Rooms' },
+                      { icon: Wifi, text: 'Complimentary WiFi' },
+                      { icon: Clock, text: '24/7 Security' },
+                      { icon: Utensils, text: 'On-site Dining' }
+                    ].map((item, index) => (
+                      <div key={index} className="flex items-center p-4 bg-blue-50 rounded-xl border border-blue-100">
+                        <item.icon className="mr-4 text-blue-600" size={24} />
+                        <span className="font-medium text-gray-800">{item.text}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 
                 <div>
-                  <h3 
-                    className="text-xl font-semibold mb-4"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
                     Conference Rooms
                   </h3>
                   <div className="space-y-4">
-                    <div className="border rounded-lg p-4" style={{ borderColor: '#D4D8E8' }}>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
-                        General Assembly Hall
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Capacity: 300 | Opening & Closing Ceremonies
-                      </p>
-                    </div>
-                    <div className="border rounded-lg p-4" style={{ borderColor: '#D4D8E8' }}>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
-                        Committee Rooms (A-O)
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Capacity: 30-50 each | All committee sessions
-                      </p>
-                    </div>
-                    <div className="border rounded-lg p-4" style={{ borderColor: '#D4D8E8' }}>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
-                        Faculty Lounge
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Dedicated space for faculty advisors
-                      </p>
-                    </div>
-                    <div className="border rounded-lg p-4" style={{ borderColor: '#D4D8E8' }}>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
-                        Registration Area
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Main lobby with welcome desk
-                      </p>
-                    </div>
+                    {[
+                      { title: 'General Assembly Hall', desc: 'Capacity: 300 | Opening & Closing Ceremonies' },
+                      { title: 'Committee Rooms (A-O)', desc: 'Capacity: 30-50 each | All committee sessions' },
+                      { title: 'Faculty Lounge', desc: 'Dedicated space for faculty advisors' },
+                      { title: 'Registration Area', desc: 'Main lobby with welcome desk' }
+                    ].map((room, index) => (
+                      <div key={index} className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                        <h4 className="font-bold mb-2 text-gray-900 text-lg">
+                          {room.title}
+                        </h4>
+                        <p className="text-gray-600">
+                          {room.desc}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
               
               {/* Campus Map */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 
-                  className="text-xl font-semibold mb-4"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-white rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold mb-6 text-gray-900">
                   Campus Map
                 </h3>
-                <div className="bg-gray-100 rounded-lg h-96 flex items-center justify-center">
+                <div className="bg-gray-100 rounded-xl h-96 flex items-center justify-center">
                   <img 
                     src="/api/placeholder/800/400" 
                     alt="GSU Campus Map"
-                    className="max-w-full max-h-full object-contain rounded"
+                    className="max-w-full max-h-full object-contain rounded-lg"
                   />
                 </div>
               </div>
@@ -372,233 +212,117 @@ const VenuePage = () => {
 
           {/* Directions Tab */}
           {activeTab === 'directions' && (
-            <div className="space-y-8">
-              <h2 
-                className="text-3xl font-bold mb-6"
-                style={{ 
-                  color: '#29487D',
-                  fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                }}
-              >
+            <div className="space-y-12">
+              <h2 className="text-4xl font-bold mb-8 text-gray-900">
                 Getting to the Venue
               </h2>
               
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <Plane style={{ color: '#29487D' }} className="mr-3" size={24} />
-                    <h3 
-                      className="text-xl font-semibold"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-white rounded-xl shadow-md p-6">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-blue-100 p-3 rounded-xl mr-4">
+                      <Plane className="text-blue-600" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
                       By Air
                     </h3>
                   </div>
-                  <p 
-                    className="mb-4"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
-                    <strong>Hartsfield-Jackson Atlanta International Airport (ATL)</strong><br />
-                    Distance: 10 miles south of downtown
-                  </p>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                  <div className="mb-6">
+                    <h4 className="font-bold text-gray-900 mb-1">
+                      Hartsfield-Jackson Atlanta International Airport (ATL)
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Distance: 10 miles south of downtown
+                    </p>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-blue-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         MARTA (Recommended)
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Take the Gold Line from Airport Station to Georgia State Station. 2-minute walk to venue. Cost: $2.50
                       </p>
                     </div>
                     <div>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                      <h4 className="font-bold mb-1 text-gray-900">
                         Taxi/Rideshare
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Approximately $30-45 to downtown Atlanta
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <Car style={{ color: '#29487D' }} className="mr-3" size={24} />
-                    <h3 
-                      className="text-xl font-semibold"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                <div className="bg-white rounded-xl shadow-md p-6">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-green-100 p-3 rounded-xl mr-4">
+                      <Car className="text-green-600" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
                       By Car
                     </h3>
                   </div>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-green-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         From North (I-75/85 South)
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Exit 249A (Courtland Street), follow ramp right onto Courtland Street, continue to Gilmer Street
                       </p>
                     </div>
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                    <div className="border-l-4 border-green-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         From South (I-75/85 North)
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Exit 246 (Central Ave/Fulton St), right fork to Fulton St, right on Fulton, left on Capitol Ave (becomes Piedmont Ave)
                       </p>
                     </div>
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                    <div className="border-l-4 border-green-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         From East/West (I-20)
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Exit 58A (Capitol Avenue), right on Capitol Ave (becomes Piedmont Ave), continue to Gilmer Street
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <Train style={{ color: '#29487D' }} className="mr-3" size={24} />
-                    <h3 
-                      className="text-xl font-semibold"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                <div className="bg-white rounded-xl shadow-md p-6">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-purple-100 p-3 rounded-xl mr-4">
+                      <Train className="text-purple-600" size={24} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
                       By Transit
                     </h3>
                   </div>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                  <div className="space-y-4">
+                    <div className="border-l-4 border-purple-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         MARTA Rail
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Georgia State Station (Blue/Green Lines) - 2 minute walk to Student Center East
                       </p>
                     </div>
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                    <div className="border-l-4 border-purple-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         MARTA Bus
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Multiple routes serve downtown area including Routes 3, 21, 26, 42, 49, 55
                       </p>
                     </div>
-                    <div>
-                      <h4 
-                        className="font-bold mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'Gill Sans Bold', 'Myriad Pro Bold', 'SF Pro Display Bold', 'Helvetica Neue', Arial, sans-serif"
-                        }}
-                      >
+                    <div className="border-l-4 border-purple-500 pl-4">
+                      <h4 className="font-bold mb-1 text-gray-900">
                         Atlanta Streetcar
                       </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm text-gray-600">
                         Auburn at Piedmont Station - 5 minute walk to venue
                       </p>
                     </div>
@@ -606,23 +330,11 @@ const VenuePage = () => {
                 </div>
               </div>
 
-              <div 
-                className="border rounded-lg p-6"
-                style={{ 
-                  backgroundColor: '#F8F9FF',
-                  borderColor: '#D4D8E8'
-                }}
-              >
-                <h3 
-                  className="text-lg font-semibold mb-3"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-4 text-gray-900">
                   Address for GPS Navigation
                 </h3>
-                <p className="text-lg font-mono bg-white px-3 py-2 rounded border">
+                <p className="text-2xl font-mono bg-white px-6 py-4 rounded-lg border shadow-sm">
                   55 Gilmer Street SE, Atlanta, GA 30303
                 </p>
               </div>
@@ -631,231 +343,83 @@ const VenuePage = () => {
 
           {/* Parking Tab */}
           {activeTab === 'parking' && (
-            <div className="space-y-8">
-              <h2 
-                className="text-3xl font-bold mb-6"
-                style={{ 
-                  color: '#29487D',
-                  fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                }}
-              >
+            <div className="space-y-12">
+              <h2 className="text-4xl font-bold mb-8 text-gray-900">
                 Parking Information
               </h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-6">
-                  <div className="bg-white rounded-lg shadow-lg p-6">
-                    <h3 
-                      className="text-xl font-semibold mb-4"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 className="text-2xl font-bold mb-6 text-gray-900">
                       Student Center Parking Deck
                     </h3>
-                    <p 
-                      className="mb-4"
-                      style={{ 
-                        color: '#6B7280',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      <strong>Address:</strong> 41 Courtland Street SE<br />
-                      <strong>Rate:</strong> $10 per day<br />
-                      <strong>Hours:</strong> 24/7 access
-                    </p>
-                    <p 
-                      className="text-sm"
-                      style={{ 
-                        color: '#6B7280',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                    <div className="space-y-3 mb-6">
+                      <p className="text-gray-700">
+                        <strong className="text-gray-900">Address:</strong> 41 Courtland Street SE
+                      </p>
+                      <p className="text-gray-700">
+                        <strong className="text-gray-900">Rate:</strong> $10 per day
+                      </p>
+                      <p className="text-gray-700">
+                        <strong className="text-gray-900">Hours:</strong> 24/7 access
+                      </p>
+                    </div>
+                    <p className="text-gray-600 bg-blue-50 p-4 rounded-lg">
                       The most convenient parking option, connected directly to the Student Center.
                       Accepts cash and credit cards.
                     </p>
                   </div>
 
-                  <div className="bg-white rounded-lg shadow-lg p-6">
-                    <h3 
-                      className="text-xl font-semibold mb-4"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                  <div className="bg-white rounded-2xl shadow-lg p-8">
+                    <h3 className="text-2xl font-bold mb-6 text-gray-900">
                       Alternative Parking
                     </h3>
-                    <div className="space-y-3">
-                      <div>
-                        <h4 
-                          className="font-medium mb-2"
-                          style={{ 
-                            color: '#29487D',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          Kinney Parking
-                        </h4>
-                        <p 
-                          className="text-sm"
-                          style={{ 
-                            color: '#6B7280',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          Various locations downtown, $8-15/day
-                        </p>
-                      </div>
-                      <div>
-                        <h4 
-                          className="font-medium mb-2"
-                          style={{ 
-                            color: '#29487D',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          Street Parking
-                        </h4>
-                        <p 
-                          className="text-sm"
-                          style={{ 
-                            color: '#6B7280',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          Limited meter parking, $1.50/hour
-                        </p>
-                      </div>
-                      <div>
-                        <h4 
-                          className="font-medium mb-2"
-                          style={{ 
-                            color: '#29487D',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          Capital Gateway Deck
-                        </h4>
-                        <p 
-                          className="text-sm"
-                          style={{ 
-                            color: '#6B7280',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
-                          200 Capitol Ave SW, $12/day
-                        </p>
-                      </div>
+                    <div className="space-y-4">
+                      {[
+                        { name: 'Kinney Parking', details: 'Various locations downtown, $8-15/day' },
+                        { name: 'Street Parking', details: 'Limited meter parking, $1.50/hour' },
+                        { name: 'Capital Gateway Deck', details: '200 Capitol Ave SW, $12/day' }
+                      ].map((option, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg p-4">
+                          <h4 className="font-semibold mb-2 text-gray-900">
+                            {option.name}
+                          </h4>
+                          <p className="text-gray-600 text-sm">
+                            {option.details}
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <h3 
-                    className="text-xl font-semibold mb-4"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                <div className="bg-white rounded-2xl shadow-lg p-8">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
                     School Bus Parking
                   </h3>
-                  <p 
-                    className="mb-4"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <p className="mb-6 text-gray-700">
                     Special arrangements have been made for school buses and large vehicles.
                   </p>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Drop-off Location
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Gilmer Street entrance (main entrance)
-                      </p>
-                    </div>
-                    <div>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Bus Parking Area
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Designated area on Capitol Avenue
-                      </p>
-                    </div>
-                    <div>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Coordination Required
-                      </h4>
-                      <p 
-                        className="text-sm"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Contact us at <a 
-                          href="mailto:logistics@gsumun.org" 
-                          style={{ color: '#3C5898' }}
-                          className="transition-colors duration-200"
-                          onMouseEnter={(e) => e.target.style.color = '#29487D'}
-                          onMouseLeave={(e) => e.target.style.color = '#3C5898'}
-                        >
-                          logistics@gsumun.org
-                        </a> for bus parking arrangements
-                      </p>
-                    </div>
+                  <div className="space-y-4 mb-6">
+                    {[
+                      { title: 'Drop-off Location', desc: 'Gilmer Street entrance (main entrance)' },
+                      { title: 'Bus Parking Area', desc: 'Designated area on Capitol Avenue' },
+                      { title: 'Coordination Required', desc: 'Contact us at logistics@gsumun.org for bus parking arrangements' }
+                    ].map((item, index) => (
+                      <div key={index} className="border-l-4 border-yellow-500 pl-4">
+                        <h4 className="font-semibold mb-2 text-gray-900">
+                          {item.title}
+                        </h4>
+                        <p className="text-sm text-gray-600">
+                          {item.desc}
+                        </p>
+                      </div>
+                    ))}
                   </div>
                   
-                  <div 
-                    className="mt-6 p-4 border rounded"
-                    style={{ 
-                      backgroundColor: '#FEF3C7',
-                      borderColor: '#F59E0B'
-                    }}
-                  >
-                    <p 
-                      className="text-sm"
-                      style={{ 
-                        color: '#92400E',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                  <div className="bg-amber-50 border border-amber-200 p-6 rounded-xl">
+                    <p className="text-sm text-amber-800">
                       <strong>Important:</strong> Bus parking must be arranged in advance. 
                       Please contact our logistics team at least 2 weeks before the conference.
                     </p>
@@ -867,24 +431,12 @@ const VenuePage = () => {
 
           {/* Hotels Tab */}
           {activeTab === 'hotels' && (
-            <div className="space-y-8">
-              <div className="text-center mb-8">
-                <h2 
-                  className="text-3xl font-bold mb-4"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+            <div className="space-y-12">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-6 text-gray-900">
                   Recommended Hotels
                 </h2>
-                <p 
-                  className="max-w-2xl mx-auto"
-                  style={{ 
-                    color: '#6B7280',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+                <p className="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
                   We've partnered with several downtown Atlanta hotels to offer special rates for GSUMUN delegates. 
                   When booking, mention "GSUMUN 2025" to receive the conference rate.
                 </p>
@@ -892,80 +444,45 @@ const VenuePage = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {hotels.map((hotel, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                  <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
                     <img 
                       src={hotel.image} 
                       alt={hotel.name}
                       className="w-full h-48 object-cover"
                     />
-                    <div className="p-6">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 
-                          className="text-xl font-semibold"
-                          style={{ 
-                            color: '#29487D',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
+                    <div className="p-8">
+                      <div className="flex justify-between items-start mb-4">
+                        <h3 className="text-xl font-bold text-gray-900">
                           {hotel.name}
                         </h3>
-                        <span 
-                          className="font-bold"
-                          style={{ 
-                            color: '#3C5898',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
+                        <span className="text-2xl font-bold text-blue-600">
                           {hotel.rate}
                         </span>
                       </div>
-                      <div className="flex items-center mb-2" style={{ color: '#6B7280' }}>
-                        <MapPin size={16} className="mr-1" />
-                        <span 
-                          className="text-sm"
-                          style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                        >
+                      <div className="flex items-center mb-3 text-gray-600">
+                        <MapPin size={16} className="mr-2" />
+                        <span className="text-sm font-medium">
                           {hotel.distance} from venue
                         </span>
                       </div>
-                      <p 
-                        className="text-sm mb-3"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
+                      <p className="text-sm mb-4 text-gray-600">
                         {hotel.address}
                       </p>
-                      <div className="flex items-center mb-4" style={{ color: '#6B7280' }}>
-                        <Phone size={16} className="mr-1" />
-                        <span 
-                          className="text-sm"
-                          style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                        >
+                      <div className="flex items-center mb-6 text-gray-600">
+                        <Phone size={16} className="mr-2" />
+                        <span className="text-sm">
                           {hotel.phone}
                         </span>
                       </div>
-                      <div className="border-t pt-3" style={{ borderColor: '#D4D8E8' }}>
-                        <h4 
-                          className="font-medium mb-2"
-                          style={{ 
-                            color: '#29487D',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
+                      <div className="border-t border-gray-200 pt-4">
+                        <h4 className="font-semibold mb-3 text-gray-900">
                           Amenities
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {hotel.amenities.map((amenity, idx) => (
                             <span 
                               key={idx}
-                              className="px-2 py-1 text-xs rounded"
-                              style={{ 
-                                backgroundColor: '#D4D8E8',
-                                color: '#29487D',
-                                fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                              }}
+                              className="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-800 font-medium"
                             >
                               {amenity}
                             </span>
@@ -977,34 +494,27 @@ const VenuePage = () => {
                 ))}
               </div>
 
-              <div 
-                className="border rounded-lg p-6"
-                style={{ 
-                  backgroundColor: '#F8F9FF',
-                  borderColor: '#D4D8E8'
-                }}
-              >
-                <h3 
-                  className="text-lg font-semibold mb-3"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-4 text-gray-900">
                   Booking Information
                 </h3>
-                <ul 
-                  className="space-y-2 text-sm"
-                  style={{ 
-                    color: '#374151',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
-                  <li>• Mention "GSUMUN 2025" when booking to receive special conference rates</li>
-                  <li>• Rates are per night and subject to availability</li>
-                  <li>• Book early for best availability and rates</li>
-                  <li>• Cancellation policies vary by hotel</li>
-                  <li>• Some hotels offer group discounts for 10+ rooms</li>
+                <ul className="space-y-3 text-gray-700">
+                  <li className="flex items-start">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                    Mention "GSUMUN 2025" when booking to receive special conference rates
+                  </li>
+                  <li className="flex items-start">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                    Rates are per night and subject to availability
+                  </li>
+                  <li className="flex items-start">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                    Book early for best availability and rates
+                  </li>
+                  <li className="flex items-start">
+                    <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                    Some hotels offer group discounts for 10+ rooms
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1012,69 +522,45 @@ const VenuePage = () => {
 
           {/* Dining Tab */}
           {activeTab === 'dining' && (
-            <div className="space-y-8">
-              <div className="text-center mb-8">
-                <h2 
-                  className="text-3xl font-bold mb-4"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+            <div className="space-y-12">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold mb-6 text-gray-900">
                   Dining Options
                 </h2>
-                <p 
-                  className="max-w-2xl mx-auto"
-                  style={{ 
-                    color: '#6B7280',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+                <p className="max-w-3xl mx-auto text-lg text-gray-700 leading-relaxed">
                   Downtown Atlanta offers excellent dining options within walking distance of the venue. 
-                  Conference registration includes select meals, with plenty of options for other dining needs.
+                  Delegates are responsible for their own meals during the conference.
                 </p>
               </div>
 
-              {/* Included Meals */}
-              <div 
-                className="border rounded-lg p-6 mb-8"
-                style={{ 
-                  backgroundColor: '#F0FDF4',
-                  borderColor: '#22C55E'
-                }}
-              >
-                <h3 
-                  className="text-xl font-semibold mb-4"
-                  style={{ 
-                    color: '#15803D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
-                  Meals Included in Registration
+              {/* Food Information */}
+              <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-2xl p-8 mb-12">
+                <h3 className="text-2xl font-bold mb-4 text-orange-900">
+                  Meal Information
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="flex items-center">
-                    <Clock style={{ color: '#22C55E' }} className="mr-3" size={20} />
-                    <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                      Continental breakfast (Day 1 & 2)
+                    <Utensils className="text-orange-600 mr-4" size={24} />
+                    <span className="text-gray-800 font-medium">
+                      Meals not included in registration fee
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <Utensils style={{ color: '#22C55E' }} className="mr-3" size={20} />
-                    <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                      Lunch (Day 1 & 2)
+                    <MapPin className="text-orange-600 mr-4" size={24} />
+                    <span className="text-gray-800 font-medium">
+                      Many dining options within walking distance
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <Users style={{ color: '#22C55E' }} className="mr-3" size={20} />
-                    <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                      Delegate social refreshments
+                    <Clock className="text-orange-600 mr-4" size={24} />
+                    <span className="text-gray-800 font-medium">
+                      Student Center food court available on-site
                     </span>
                   </div>
                   <div className="flex items-center">
-                    <Clock style={{ color: '#22C55E' }} className="mr-3" size={20} />
-                    <span style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
-                      Coffee breaks throughout
+                    <Users className="text-orange-600 mr-4" size={24} />
+                    <span className="text-gray-800 font-medium">
+                      Group dining discounts available at select restaurants
                     </span>
                   </div>
                 </div>
@@ -1082,46 +568,22 @@ const VenuePage = () => {
 
               {/* Restaurant Categories */}
               {restaurants.map((category, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg p-6">
-                  <h3 
-                    className="text-xl font-semibold mb-4"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                <div key={index} className="bg-white rounded-2xl shadow-lg p-8">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
                     {category.category}
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {category.options.map((restaurant, idx) => (
-                      <div key={idx} className="border rounded-lg p-4" style={{ borderColor: '#D4D8E8' }}>
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 
-                            className="font-medium mb-2"
-                            style={{ 
-                              color: '#29487D',
-                              fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                            }}
-                          >
+                      <div key={idx} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="font-bold text-gray-900 text-lg">
                             {restaurant.name}
                           </h4>
-                          <span 
-                            className="text-sm"
-                            style={{ 
-                              color: '#9CA3AF',
-                              fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                            }}
-                          >
+                          <span className="text-sm text-blue-600 font-medium bg-blue-50 px-2 py-1 rounded">
                             {restaurant.distance}
                           </span>
                         </div>
-                        <p 
-                          className="text-sm"
-                          style={{ 
-                            color: '#6B7280',
-                            fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                          }}
-                        >
+                        <p className="text-gray-600">
                           {restaurant.cuisine}
                         </p>
                       </div>
@@ -1130,34 +592,23 @@ const VenuePage = () => {
                 </div>
               ))}
 
-              <div 
-                className="border rounded-lg p-6"
-                style={{ 
-                  backgroundColor: '#F8F9FF',
-                  borderColor: '#D4D8E8'
-                }}
-              >
-                <h3 
-                  className="text-lg font-semibold mb-3"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-4 text-gray-900">
                   Dining Tips
                 </h3>
-                <ul 
-                  className="space-y-2 text-sm"
-                  style={{ 
-                    color: '#374151',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
-                  <li>• Many restaurants offer student discounts with valid ID</li>
-                  <li>• Food trucks are common around downtown during lunch hours</li>
-                  <li>• The Student Center has a food court with multiple options</li>
-                  <li>• Consider making reservations for large groups</li>
-                  <li>• Most restaurants accept credit cards and mobile payments</li>
+                <ul className="space-y-3 text-gray-700">
+                  {[
+                    'Many restaurants offer student discounts with valid ID',
+                    'Food trucks are common around downtown during lunch hours',
+                    'The Student Center has a food court with multiple options',
+                    'Consider making reservations for large groups',
+                    'Most restaurants accept credit cards and mobile payments'
+                  ].map((tip, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      {tip}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -1165,266 +616,100 @@ const VenuePage = () => {
 
           {/* Accessibility Tab */}
           {activeTab === 'accessibility' && (
-            <div className="space-y-8">
-              <h2 
-                className="text-3xl font-bold mb-6"
-                style={{ 
-                  color: '#29487D',
-                  fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                }}
-              >
+            <div className="space-y-12">
+              <h2 className="text-4xl font-bold mb-8 text-gray-900">
                 Accessibility Information
               </h2>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex items-center mb-4">
-                    <Accessibility style={{ color: '#29487D' }} className="mr-3" size={24} />
-                    <h3 
-                      className="text-xl font-semibold"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
+                <div className="bg-white rounded-2xl shadow-lg p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="bg-green-100 p-3 rounded-full mr-4">
+                      <Accessibility className="text-green-600" size={28} />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">
                       Facility Access
                     </h3>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
-                        style={{ backgroundColor: '#22C55E' }}
-                      ></div>
-                      <span 
-                        className="text-sm"
-                        style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                      >
-                        ADA compliant building with elevator access to all floors
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
-                        style={{ backgroundColor: '#22C55E' }}
-                      ></div>
-                      <span 
-                        className="text-sm"
-                        style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                      >
-                        Accessible parking spaces in the Student Center Parking Deck
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
-                        style={{ backgroundColor: '#22C55E' }}
-                      ></div>
-                      <span 
-                        className="text-sm"
-                        style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                      >
-                        Wheelchair accessible entrances and pathways
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
-                        style={{ backgroundColor: '#22C55E' }}
-                      ></div>
-                      <span 
-                        className="text-sm"
-                        style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                      >
-                        Accessible restrooms on each floor
-                      </span>
-                    </div>
-                    <div className="flex items-start">
-                      <div 
-                        className="w-2 h-2 rounded-full mt-2 mr-3 flex-shrink-0"
-                        style={{ backgroundColor: '#22C55E' }}
-                      ></div>
-                      <span 
-                        className="text-sm"
-                        style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
-                      >
-                        All committee rooms are wheelchair accessible
-                      </span>
-                    </div>
+                  <div className="space-y-4">
+                    {[
+                      'ADA compliant building with elevator access to all floors',
+                      'Accessible parking spaces in the Student Center Parking Deck',
+                      'Wheelchair accessible entrances and pathways',
+                      'Accessible restrooms on each floor',
+                      'All committee rooms are wheelchair accessible'
+                    ].map((feature, index) => (
+                      <div key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                        <span className="text-gray-700">{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <h3 
-                    className="text-xl font-semibold mb-4"
-                    style={{ 
-                      color: '#29487D',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                <div className="bg-white rounded-2xl shadow-lg p-8">
+                  <h3 className="text-2xl font-bold mb-6 text-gray-900">
                     Special Accommodations
                   </h3>
-                  <p 
-                    className="mb-4"
-                    style={{ 
-                      color: '#6B7280',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                  >
+                  <p className="mb-6 text-gray-700 leading-relaxed">
                     We are committed to ensuring all delegates can fully participate in GSUMUN. 
                     Please contact us if you need any special accommodations.
                   </p>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 
-                        className="font-medium mb-2"
-                        style={{ 
-                          color: '#29487D',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        Available Services
-                      </h4>
-                      <ul 
-                        className="text-sm mt-2 space-y-1"
-                        style={{ 
-                          color: '#6B7280',
-                          fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                        }}
-                      >
-                        <li>• Large print materials</li>
-                      </ul>
-                    </div>
+                  <div className="bg-blue-50 border border-blue-200 p-6 rounded-xl">
+                    <h4 className="font-semibold mb-3 text-gray-900">
+                      Available Services
+                    </h4>
+                    <ul className="text-gray-700">
+                      <li className="flex items-start">
+                        <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                        Large print materials
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 
-                  className="text-xl font-semibold mb-4"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-white rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold mb-6 text-gray-900">
                   Transportation Accessibility
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h4 
-                      className="font-medium mb-2"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      MARTA Rail
-                    </h4>
-                    <p 
-                      className="text-sm"
-                      style={{ 
-                        color: '#6B7280',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      All MARTA stations are wheelchair accessible with elevators and tactile guidance systems.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 
-                      className="font-medium mb-2"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      Rideshare
-                    </h4>
-                    <p 
-                      className="text-sm"
-                      style={{ 
-                        color: '#6B7280',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      Both Uber and Lyft offer wheelchair accessible vehicle options in Atlanta.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 
-                      className="font-medium mb-2"
-                      style={{ 
-                        color: '#29487D',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      Taxi Services
-                    </h4>
-                    <p 
-                      className="text-sm"
-                      style={{ 
-                        color: '#6B7280',
-                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                      }}
-                    >
-                      Several taxi companies provide wheelchair accessible vehicles with advance booking.
-                    </p>
-                  </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {[
+                    { title: 'MARTA Rail', desc: 'All MARTA stations are wheelchair accessible with elevators and tactile guidance systems.' },
+                    { title: 'Rideshare', desc: 'Both Uber and Lyft offer wheelchair accessible vehicle options in Atlanta.' },
+                    { title: 'Taxi Services', desc: 'Several taxi companies provide wheelchair accessible vehicles with advance booking.' }
+                  ].map((option, index) => (
+                    <div key={index} className="border border-gray-200 rounded-xl p-6">
+                      <h4 className="font-bold mb-3 text-gray-900">
+                        {option.title}
+                      </h4>
+                      <p className="text-gray-600 text-sm">
+                        {option.desc}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div 
-                className="border rounded-lg p-6"
-                style={{ 
-                  backgroundColor: '#F1F5F9',
-                  borderColor: '#CBD5E1'
-                }}
-              >
-                <h3 
-                  className="text-lg font-semibold mb-3"
-                  style={{ 
-                    color: '#29487D',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+              <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-2xl p-8">
+                <h3 className="text-xl font-bold mb-4 text-gray-900">
                   Request Accommodations
                 </h3>
-                <p 
-                  className="text-sm mb-3"
-                  style={{ 
-                    color: '#374151',
-                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                  }}
-                >
+                <p className="text-gray-700 mb-6">
                   To ensure we can provide the accommodations you need, please contact us at least 
                   2 weeks before the conference.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a 
-                    href="mailto:accessibility@gsumun.org" 
-                    className="px-4 py-2 rounded text-center font-medium transition-all duration-200"
-                    style={{ 
-                      backgroundColor: '#29487D',
-                      color: 'white',
-                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
-                    }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#3C5898'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = '#29487D'}
-                  >
-                    Email Accessibility Team
-                  </a>
-                </div>
+                <a 
+                  href="mailto:accessibility@gsumun.org" 
+                  className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-colors duration-200"
+                >
+                  Email Accessibility Team
+                </a>
               </div>
             </div>
           )}
         </div>
       </section>
-      
-      {/* White line separator before footer */}
-      <div 
-        className="w-full h-px"
-        style={{ backgroundColor: 'white' }}
-      ></div>
     </div>
   );
 };

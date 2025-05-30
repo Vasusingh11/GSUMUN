@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, ExternalLink } from 'lucide-react';
-import GSUMUNLogo from '../shared/GSUMUNLogo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -43,7 +42,11 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         {/* GSUMUN Branding Section */}
         <div className="text-center mb-12 pb-8 flex flex-col items-center justify-center" style={{ borderBottom: '1px solid #3C5898' }}>
-          <GSUMUNLogo size="large" />
+          <img 
+            src="/images/gsu-mun-logo.png" 
+            alt="Georgia State University Model United Nations Logo" 
+            className="h-24 w-24 object-contain rounded-full"
+          />
           <h2 className="text-3xl font-bold mt-4" style={{ fontFamily: `'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif'`, fontWeight: 700, textAlign: 'center' }}>
             GSUMUN
           </h2>

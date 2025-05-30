@@ -11,6 +11,17 @@ const Navbar = () => {
   // Navigation links with dropdowns
   const navLinks = [
     { name: 'Home', path: '/' },
+    {
+      name: 'About',
+      path: '#',
+      dropdown: [
+        { name: 'GSUMUN', path: '/about' },
+        { name: 'Advisory Board', path: '/advisory-board' },
+        { name: 'Secretariat', path: '/secretariat' },
+        { name: 'Team', path: '/team' },
+        { name: 'Contact', path: '/contact' },
+      ]
+    },
     { 
       name: 'Conference', 
       path: '#',
@@ -31,24 +42,13 @@ const Navbar = () => {
         { name: 'Position Papers', path: '/resources/position-papers' },
       ]
     },
-    {
-      name: 'About',
-      path: '#',
-      dropdown: [
-        { name: 'GSUMUN', path: '/about' },
-        { name: 'Advisory Board', path: '/advisory-board' },
-        { name: 'Secretariat', path: '/secretariat' },
-        { name: 'Team', path: '/team' },
-        { name: 'Contact', path: '/contact' },
-      ]
-    },
     { name: 'RSA', path: '/rsa' },
     { name: 'Register', path: '/register', highlight: true },
   ];
 
   const navFont = {
     fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
-    fontWeight: 600
+    fontWeight: 400
   };
 
   // Handle scroll for navbar background
@@ -121,13 +121,12 @@ const Navbar = () => {
 
   return (
     <nav 
-      className={`fixed w-full z-50 transition-all duration-300 shadow-md py-2`}
+      className="fixed w-full z-50 shadow-md py-2"
       style={{ 
         backgroundColor: 'white',
         fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif'
       }}
     >
-
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -140,7 +139,7 @@ const Navbar = () => {
             <div 
               className="font-bold text-2xl"
               style={{ 
-                color: '#29487D' ,
+                color: '#29487D',
                 fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
                 fontWeight: 700
               }}
@@ -160,14 +159,14 @@ const Navbar = () => {
                   <div>
                     <button
                       onClick={(e) => toggleDropdown(index, e)}
-                      className="flex items-center space-x-1 text-xl font-semibold transition-all duration-200 px-4 py-2 rounded-md hover:bg-opacity-20"
+                      className="flex items-center space-x-1 text-xl px-4 py-2 rounded-md transition-all duration-200"
                       style={{
                         color:'#29487D',
                         ...navFont,
                         fontSize: '18px'
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = scrolled ? '#D4D8E8' : 'rgba(60, 88, 152, 0.3)';
+                        e.target.style.backgroundColor = '#D4D8E8';
                       }}
                       onMouseLeave={(e) => {
                         e.target.style.backgroundColor = 'transparent';
@@ -176,7 +175,7 @@ const Navbar = () => {
                       <span>{link.name}</span>
                       <ChevronDown 
                         size={18} 
-                        className={`transition-transform duration-200 ${
+                        className={`${
                           dropdownOpen[index] ? 'rotate-180' : ''
                         }`}
                       />
@@ -189,13 +188,19 @@ const Navbar = () => {
                             <NavLink
                               key={dropdownIndex}
                               to={dropdownItem.path}
-                              className="block px-4 py-2 text-base transition-all duration-200 hover:bg-blue-50 hover:text-blue-600"
+                              className="block px-4 py-2 text-base transition-all duration-200"
                               style={{ 
                                 color: '#29487D',
                                 fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
                                 fontSize: '16px'
                               }}
                               onClick={() => setDropdownOpen({})}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = '#f3f4f6';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = 'transparent';
+                              }}
                             >
                               {dropdownItem.name}
                             </NavLink>
@@ -207,26 +212,12 @@ const Navbar = () => {
                 ) : (
                   <NavLink
                     to={link.path}
-                    className="text-xl font-semibold transition-all duration-200 px-4 py-2 rounded-md"
+                    className="text-xl px-4 py-2 rounded-md"
                     style={{
-                      color: link.highlight ? 'white' : ('#29487D' ),
+                      color: link.highlight ? 'white' : '#29487D',
                       backgroundColor: link.highlight ? '#3C5898' : 'transparent',
                       ...navFont,
                       fontSize: '18px'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (link.highlight) {
-                        e.target.style.backgroundColor = '#29487D';
-                      } else {
-                        e.target.style.backgroundColor = '#D4D8E8' ;
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (link.highlight) {
-                        e.target.style.backgroundColor = '#3C5898';
-                      } else {
-                        e.target.style.backgroundColor = 'transparent';
-                      }
                     }}
                   >
                     {link.name}
@@ -238,14 +229,8 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden transition-all duration-200 p-2 rounded-md hover:bg-opacity-20 z-50"
+            className="lg:hidden p-2 rounded-md z-50"
             onClick={() => setIsOpen(!isOpen)}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor =  '#D4D8E8';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent';
-            }}
           >
             {isOpen ? (
               <X size={26} style={{ color: scrolled ? '#29487D' : 'white' }} />
@@ -273,17 +258,23 @@ const Navbar = () => {
                     <div>
                       <button
                         onClick={() => toggleMobileDropdown(index)}
-                        className="flex items-center justify-between w-full text-left py-4 px-2 transition-all duration-200 hover:bg-gray-50 rounded-md"
+                        className="flex items-center justify-between w-full text-left py-4 px-2 rounded-md transition-all duration-200"
                         style={{ 
                           color: '#29487D',
                           ...navFont,
                           fontSize: '18px'
                         }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = '#f9fafb';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = 'transparent';
+                        }}
                       >
                         <span>{link.name}</span>
                         <ChevronRight 
                           size={18} 
-                          className={`transition-transform duration-200 ${
+                          className={`${
                             mobileDropdownOpen[index] ? 'rotate-90' : ''
                           }`}
                         />
@@ -295,13 +286,19 @@ const Navbar = () => {
                             <NavLink
                               key={dropdownIndex}
                               to={dropdownItem.path}
-                              className="block py-3 px-4 rounded-md transition-all duration-200 hover:bg-gray-50"
+                              className="block py-3 px-4 rounded-md transition-all duration-200"
                               style={{ 
                                 color: '#29487D',
                                 fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
                                 fontSize: '16px'
                               }}
                               onClick={closeMobileMenu}
+                              onMouseEnter={(e) => {
+                                e.target.style.backgroundColor = '#f9fafb';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.target.style.backgroundColor = 'transparent';
+                              }}
                             >
                               {dropdownItem.name}
                             </NavLink>
@@ -312,7 +309,7 @@ const Navbar = () => {
                   ) : (
                     <NavLink
                       to={link.path}
-                      className={`block py-4 px-2 rounded-md transition-all duration-200 hover:bg-gray-50 ${
+                      className={`block py-4 px-2 rounded-md ${
                         link.highlight ? 'mx-2 my-2' : ''
                       }`}
                       style={{
