@@ -72,7 +72,7 @@ const AdvisoryBoardPage = () => {
         "Launched digital innovation initiatives", 
         "Established sustainability programs"
       ],
-      currentRole: "Strategic Planning Advisor"
+      currentRole: "Secretariat Liason"
     },
     {
       id: 5,
@@ -200,7 +200,7 @@ const AdvisoryBoardPage = () => {
                 className="text-3xl font-bold mb-2"
                 style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
               >
-                15+
+                55+
               </div>
               <div 
                 style={{ 
@@ -216,7 +216,7 @@ const AdvisoryBoardPage = () => {
                 className="text-3xl font-bold mb-2"
                 style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
               >
-                20+
+                30+
               </div>
               <div 
                 style={{ 
@@ -232,7 +232,7 @@ const AdvisoryBoardPage = () => {
                 className="text-3xl font-bold mb-2"
                 style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
               >
-                5000+
+                50000+
               </div>
               <div 
                 style={{ 

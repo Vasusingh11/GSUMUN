@@ -4,10 +4,10 @@ import { Check, ChevronLeft, ChevronRight, Info, AlertCircle } from 'lucide-reac
 const RegistrationPage = () => {
   // State for multi-step form
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     // School information
     schoolName: '',
-    schoolAddress: '',
     schoolPhone: '',
     
     // Faculty advisor information
@@ -18,16 +18,20 @@ const RegistrationPage = () => {
     
     // Delegation information
     delegationSize: '',
-    committeePreferences: {},
+    countryPreferences: {
+      preference1: '',
+      preference2: '',
+      preference3: '',
+      preference4: '',
+      preference5: ''
+    },
+    additionalInfo: '',
     
     // Payment information
     paymentMethod: '',
-    earlyRegistration: false,
     
     // Additional information
     specialAccommodations: '',
-    previousExperience: '',
-    hearAbout: '',
     
     // Terms and conditions
     termsAgreed: false
@@ -36,26 +40,28 @@ const RegistrationPage = () => {
   // State for form errors
   const [errors, setErrors] = useState({});
   
-  // Available committees data
-  const availableCommittees = [
-    { id: 'unsc', name: 'UN Security Council', seats: 15, available: 7, level: 'Advanced' },
-    { id: 'sochum', name: 'Social, Cultural & Humanitarian Committee', seats: 30, available: 16, level: 'Beginner' },
-    { id: 'ecosoc', name: 'Economic and Social Council', seats: 25, available: 12, level: 'Intermediate' },
-    { id: 'unep', name: 'UN Environment Programme', seats: 30, available: 21, level: 'Beginner' },
-    { id: 'hsc', name: 'Historical Security Council 1994', seats: 15, available: 9, level: 'Advanced' },
-    { id: 'who', name: 'World Health Organization', seats: 25, available: 18, level: 'Intermediate' },
-    { id: 'g20', name: 'G20 Finance Ministers', seats: 20, available: 14, level: 'Advanced' },
-    { id: 'unhrc', name: 'UN Human Rights Council', seats: 30, available: 22, level: 'Intermediate' },
-    { id: 'disec', name: 'Disarmament and International Security', seats: 30, available: 25, level: 'Beginner' },
-    { id: 'iaea', name: 'International Atomic Energy Agency', seats: 20, available: 17, level: 'Intermediate' }
-  ];
+  // Available countries for Model UN
+  const availableCountries = [
+    'Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Armenia', 'Australia', 'Austria', 'Azerbaijan',
+    'Bahrain', 'Bangladesh', 'Belarus', 'Belgium', 'Bolivia', 'Bosnia and Herzegovina', 'Brazil', 'Bulgaria',
+    'Cambodia', 'Canada', 'Chile', 'China', 'Colombia', 'Costa Rica', 'Croatia', 'Cuba', 'Cyprus', 'Czech Republic',
+    'Denmark', 'Dominican Republic', 'Ecuador', 'Egypt', 'Estonia', 'Ethiopia', 'Finland', 'France',
+    'Georgia', 'Germany', 'Ghana', 'Greece', 'Guatemala', 'Hungary', 'Iceland', 'India', 'Indonesia',
+    'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Jamaica', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya',
+    'Kuwait', 'Latvia', 'Lebanon', 'Libya', 'Lithuania', 'Luxembourg', 'Malaysia', 'Mexico', 'Morocco',
+    'Netherlands', 'New Zealand', 'Nigeria', 'North Korea', 'Norway', 'Pakistan', 'Panama', 'Peru',
+    'Philippines', 'Poland', 'Portugal', 'Qatar', 'Romania', 'Russia', 'Saudi Arabia', 'Senegal',
+    'Serbia', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'South Korea', 'Spain', 'Sri Lanka',
+    'Sweden', 'Switzerland', 'Syria', 'Thailand', 'Tunisia', 'Turkey', 'Ukraine', 'United Arab Emirates',
+    'United Kingdom', 'United States', 'Uruguay', 'Venezuela', 'Vietnam', 'Yemen', 'Zimbabwe'
+  ].sort();
   
   // Steps configuration
   const steps = [
     { number: 1, title: 'School Information' },
     { number: 2, title: 'Advisor Information' },
     { number: 3, title: 'Delegation Size' },
-    { number: 4, title: 'Committee Preferences' },
+    { number: 4, title: 'Country Preferences' },
     { number: 5, title: 'Payment Information' },
     { number: 6, title: 'Review & Submit' }
   ];
@@ -77,18 +83,23 @@ const RegistrationPage = () => {
     }
   };
   
-  // Handle committee preference selection
-  const handleCommitteeChange = (committeeId, count) => {
-    // Ensure count is a number and not less than 0
-    const newCount = Math.max(0, parseInt(count) || 0);
-    
+  // Handle country preference selection
+  const handleCountryPreferenceChange = (preferenceKey, value) => {
     setFormData({
       ...formData,
-      committeePreferences: {
-        ...formData.committeePreferences,
-        [committeeId]: newCount
+      countryPreferences: {
+        ...formData.countryPreferences,
+        [preferenceKey]: value
       }
     });
+    
+    // Clear errors for country preferences
+    if (errors.countryPreferences) {
+      setErrors({
+        ...errors,
+        countryPreferences: ''
+      });
+    }
   };
   
   // Validate current step
@@ -98,7 +109,6 @@ const RegistrationPage = () => {
     // Validate based on current step
     if (currentStep === 1) {
       if (!formData.schoolName) newErrors.schoolName = 'School name is required';
-      if (!formData.schoolAddress) newErrors.schoolAddress = 'School address is required';
       if (!formData.schoolPhone) newErrors.schoolPhone = 'School phone number is required';
     } 
     else if (currentStep === 2) {
@@ -106,7 +116,6 @@ const RegistrationPage = () => {
       if (!formData.advisorEmail) newErrors.advisorEmail = 'Advisor email is required';
       else if (!/\S+@\S+\.\S+/.test(formData.advisorEmail)) newErrors.advisorEmail = 'Email is invalid';
       if (!formData.advisorPhone) newErrors.advisorPhone = 'Advisor phone number is required';
-      if (!formData.advisorEmergencyContact) newErrors.advisorEmergencyContact = 'Emergency contact is required';
     }
     else if (currentStep === 3) {
       if (!formData.delegationSize) newErrors.delegationSize = 'Delegation size is required';
@@ -115,13 +124,16 @@ const RegistrationPage = () => {
       }
     }
     else if (currentStep === 4) {
-      // Validate committee preferences
-      const totalSelected = Object.values(formData.committeePreferences).reduce((sum, count) => sum + count, 0);
-      if (totalSelected === 0) {
-        newErrors.committeePreferences = 'Please select at least one committee preference';
+      // Check if at least the first preference is selected
+      if (!formData.countryPreferences.preference1) {
+        newErrors.countryPreferences = 'Please select at least your first country preference';
       }
-      else if (totalSelected !== parseInt(formData.delegationSize || 0)) {
-        newErrors.committeePreferences = `You've selected ${totalSelected} slots, but your delegation size is ${formData.delegationSize}`;
+      
+      // Check for duplicates
+      const selectedCountries = Object.values(formData.countryPreferences).filter(country => country !== '');
+      const uniqueCountries = [...new Set(selectedCountries)];
+      if (selectedCountries.length !== uniqueCountries.length) {
+        newErrors.countryPreferences = 'Please select different countries for each preference';
       }
     }
     else if (currentStep === 5) {
@@ -150,34 +162,135 @@ const RegistrationPage = () => {
   };
   
   // Submit the form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {
     if (validateStep()) {
       // In a real app, this would submit the data to a server
       console.log('Submitting form data:', formData);
       
-      // Display success message or redirect to confirmation page
-      alert('Registration submitted successfully! You will receive a confirmation email shortly.');
+      // Show thank you page
+      setIsSubmitted(true);
+      window.scrollTo(0, 0);
     }
   };
   
   // Calculate total fees
   const calculateFees = () => {
-    const baseRate = formData.earlyRegistration ? 25 : 35; // per delegate
     const delegateCount = parseInt(formData.delegationSize || 0);
     
     return {
-      delegateFee: baseRate * delegateCount,
-      schoolFee: 50, // Fixed school registration fee
-      total: (baseRate * delegateCount) + 50
+      delegateFee: 50 * delegateCount,
+      total: 50 * delegateCount
     };
   };
   
-  // Get total selected delegates across all committees
-  const getTotalSelectedDelegates = () => {
-    return Object.values(formData.committeePreferences).reduce((sum, count) => sum + parseInt(count || 0), 0);
-  };
+  // Thank You Page Component
+  const ThankYouPage = () => (
+    <div className="min-h-screen pt-16" style={{ backgroundColor: '#F8F9FB' }}>
+      <section className="text-white py-16 px-4" style={{ backgroundColor: '#29487D' }}>
+        <div className="container mx-auto max-w-5xl text-center">
+          <div className="mb-6">
+            <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Check size={32} className="text-white" />
+            </div>
+          </div>
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>Thank You for Registering!</h1>
+          <p className="text-xl max-w-3xl mx-auto" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+            Your registration for GSUMUN 2025 has been successfully submitted.
+          </p>
+        </div>
+      </section>
+      
+      <section className="py-12 px-4">
+        <div className="container mx-auto max-w-3xl">
+          <div className="bg-white rounded-lg shadow-md p-8">
+            <h2 className="text-2xl font-bold mb-6 text-center" style={{ 
+              color: '#29487D',
+              fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif"
+            }}>
+              What's Next?
+            </h2>
+            
+            <div className="space-y-6">
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4" style={{ backgroundColor: '#D4D8E8' }}>
+                  <span className="font-bold" style={{ color: '#3C5898', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>1</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Confirmation Email</h3>
+                  <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>You will receive a confirmation email within 24 hours at {formData.advisorEmail}</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4" style={{ backgroundColor: '#D4D8E8' }}>
+                  <span className="font-bold" style={{ color: '#3C5898', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>2</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Country Assignments</h3>
+                  <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Country assignments will be sent 4-6 weeks before the conference</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4" style={{ backgroundColor: '#D4D8E8' }}>
+                  <span className="font-bold" style={{ color: '#3C5898', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>3</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Payment Instructions</h3>
+                  <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Payment instructions will be included in your confirmation email</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4" style={{ backgroundColor: '#D4D8E8' }}>
+                  <span className="font-bold" style={{ color: '#3C5898', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>4</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-1" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Position Papers</h3>
+                  <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Position papers will be due 2 weeks before the conference</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+              <h3 className="font-semibold mb-2">Registration Summary</h3>
+              <div className="space-y-1 text-sm">
+                <div className="flex justify-between">
+                  <span>School:</span>
+                  <span>{formData.schoolName}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delegates:</span>
+                  <span>{formData.delegationSize}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Payment Method:</span>
+                  <span>{formData.paymentMethod === 'cash' ? 'Cash' : 'Check'}</span>
+                </div>
+                <div className="flex justify-between font-semibold">
+                  <span>Total Amount:</span>
+                  <span>${calculateFees().total}</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8 text-center">
+              <p className="text-gray-600 mb-4" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Questions about your registration?</p>
+              <p className="font-medium" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+                Contact us at <a href="mailto:registration@gsumun.org" className="transition hover:opacity-80" style={{ color: '#3C5898' }}>registration@gsumun.org</a>
+              </p>
+              <p className="font-medium" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>or call (404) 555-1234</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+  
+  // If form is submitted, show thank you page
+  if (isSubmitted) {
+    return <ThankYouPage />;
+  }
   
   // Render form step content based on current step
   const renderStepContent = () => {
@@ -185,11 +298,11 @@ const RegistrationPage = () => {
       case 1:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">School Information</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>School Information</h3>
             
             <div className="grid grid-cols-1 gap-6">
               <div>
-                <label htmlFor="schoolName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="schoolName" className="block text-sm font-medium mb-1" style={{ color: '#374151', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                   School Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -198,32 +311,22 @@ const RegistrationPage = () => {
                   name="schoolName"
                   value={formData.schoolName}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.schoolName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.schoolName ? 'border-red-500' : ''}`}
+                  style={{ 
+                    borderColor: errors.schoolName ? '#EF4444' : '#D4D8E8',
+                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
+                    outline: 'none'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#3C5898'}
+                  onBlur={(e) => e.target.style.borderColor = errors.schoolName ? '#EF4444' : '#D4D8E8'}
                 />
                 {errors.schoolName && (
-                  <p className="mt-1 text-sm text-red-500">{errors.schoolName}</p>
+                  <p className="mt-1 text-sm text-red-500" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>{errors.schoolName}</p>
                 )}
               </div>
               
               <div>
-                <label htmlFor="schoolAddress" className="block text-sm font-medium text-gray-700 mb-1">
-                  School Address <span className="text-red-500">*</span>
-                </label>
-                <textarea
-                  id="schoolAddress"
-                  name="schoolAddress"
-                  rows="3"
-                  value={formData.schoolAddress}
-                  onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.schoolAddress ? 'border-red-500' : 'border-gray-300'}`}
-                ></textarea>
-                {errors.schoolAddress && (
-                  <p className="mt-1 text-sm text-red-500">{errors.schoolAddress}</p>
-                )}
-              </div>
-              
-              <div>
-                <label htmlFor="schoolPhone" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="schoolPhone" className="block text-sm font-medium mb-1" style={{ color: '#374151', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                   School Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -232,10 +335,17 @@ const RegistrationPage = () => {
                   name="schoolPhone"
                   value={formData.schoolPhone}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.schoolPhone ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.schoolPhone ? 'border-red-500' : ''}`}
+                  style={{ 
+                    borderColor: errors.schoolPhone ? '#EF4444' : '#D4D8E8',
+                    fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
+                    outline: 'none'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = '#3C5898'}
+                  onBlur={(e) => e.target.style.borderColor = errors.schoolPhone ? '#EF4444' : '#D4D8E8'}
                 />
                 {errors.schoolPhone && (
-                  <p className="mt-1 text-sm text-red-500">{errors.schoolPhone}</p>
+                  <p className="mt-1 text-sm text-red-500" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>{errors.schoolPhone}</p>
                 )}
               </div>
             </div>
@@ -245,7 +355,7 @@ const RegistrationPage = () => {
       case 2:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">Faculty Advisor Information</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>Faculty Advisor Information</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -258,7 +368,7 @@ const RegistrationPage = () => {
                   name="advisorName"
                   value={formData.advisorName}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorName ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 {errors.advisorName && (
                   <p className="mt-1 text-sm text-red-500">{errors.advisorName}</p>
@@ -275,7 +385,7 @@ const RegistrationPage = () => {
                   name="advisorEmail"
                   value={formData.advisorEmail}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorEmail ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorEmail ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 {errors.advisorEmail && (
                   <p className="mt-1 text-sm text-red-500">{errors.advisorEmail}</p>
@@ -292,7 +402,7 @@ const RegistrationPage = () => {
                   name="advisorPhone"
                   value={formData.advisorPhone}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorPhone ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorPhone ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 {errors.advisorPhone && (
                   <p className="mt-1 text-sm text-red-500">{errors.advisorPhone}</p>
@@ -301,7 +411,7 @@ const RegistrationPage = () => {
               
               <div>
                 <label htmlFor="advisorEmergencyContact" className="block text-sm font-medium text-gray-700 mb-1">
-                  Emergency Contact <span className="text-red-500">*</span>
+                  Emergency Contact
                 </label>
                 <input
                   type="text"
@@ -309,7 +419,7 @@ const RegistrationPage = () => {
                   name="advisorEmergencyContact"
                   value={formData.advisorEmergencyContact}
                   onChange={handleChange}
-                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorEmergencyContact ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full px-3 py-2 border rounded-md ${errors.advisorEmergencyContact ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                 />
                 {errors.advisorEmergencyContact && (
                   <p className="mt-1 text-sm text-red-500">{errors.advisorEmergencyContact}</p>
@@ -322,17 +432,17 @@ const RegistrationPage = () => {
       case 3:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">Delegation Size</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>Delegation Size</h3>
             
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+            <div className="border rounded-md p-4 mb-6" style={{ backgroundColor: '#F8F9FB', borderColor: '#D4D8E8' }}>
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <Info className="h-5 w-5 text-blue-600" />
+                  <Info className="h-5 w-5" style={{ color: '#3C5898' }} />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-blue-700">
+                  <p className="text-sm" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                     Please enter the total number of delegates from your school that will be participating in GSUMUN 2025.
-                    In the next step, you'll be able to allocate your delegates to specific committees.
+                    In the next step, you'll be able to select your country preferences.
                   </p>
                 </div>
               </div>
@@ -349,7 +459,7 @@ const RegistrationPage = () => {
                 min="1"
                 value={formData.delegationSize}
                 onChange={handleChange}
-                className={`w-full sm:w-1/3 px-3 py-2 border rounded-md ${errors.delegationSize ? 'border-red-500' : 'border-gray-300'}`}
+                className={`w-full sm:w-1/3 px-3 py-2 border rounded-md ${errors.delegationSize ? 'border-red-500' : 'border-gray-300'} focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
               />
               {errors.delegationSize && (
                 <p className="mt-1 text-sm text-red-500">{errors.delegationSize}</p>
@@ -358,32 +468,14 @@ const RegistrationPage = () => {
             
             <div className="mt-4">
               <p className="text-sm text-gray-600">
-                Registration fee: ${formData.earlyRegistration ? '25' : '35'} per delegate + $50 school registration fee
+                Registration fee: $50 per delegate
               </p>
               {formData.delegationSize && !isNaN(formData.delegationSize) && parseInt(formData.delegationSize) > 0 && (
                 <p className="mt-2 font-medium">
-                  Estimated total: ${calculateFees().total} 
-                  ({parseInt(formData.delegationSize)} delegates × ${formData.earlyRegistration ? '25' : '35'} + $50 school fee)
+                  Total: ${calculateFees().total} 
+                  ({parseInt(formData.delegationSize)} delegates × $50)
                 </p>
               )}
-            </div>
-            
-            <div className="mt-4">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name="earlyRegistration"
-                  checked={formData.earlyRegistration}
-                  onChange={handleChange}
-                  className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500"
-                />
-                <span className="ml-2 text-sm text-gray-700">
-                  Apply for early registration discount ($25/delegate instead of $35/delegate)
-                </span>
-              </label>
-              <p className="mt-1 text-sm text-gray-500 pl-6">
-                Early registration deadline: September 30, 2025
-              </p>
             </div>
           </div>
         );
@@ -391,89 +483,75 @@ const RegistrationPage = () => {
       case 4:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">Committee Preferences</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>Country Preferences</h3>
             
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+            <div className="border rounded-md p-4 mb-6" style={{ backgroundColor: '#F8F9FB', borderColor: '#D4D8E8' }}>
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <Info className="h-5 w-5 text-blue-600" />
+                  <Info className="h-5 w-5" style={{ color: '#3C5898' }} />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-blue-700">
-                    Please allocate your {formData.delegationSize} delegates among the committees below.
-                    The total number of selected committee slots should match your delegation size.
-                    Currently selected: <strong>{getTotalSelectedDelegates()}</strong> of {formData.delegationSize} delegates
+                  <p className="text-sm" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+                    Please select your top 5 country preferences in order of priority. 
+                    We will do our best to assign one of your preferred countries based on availability.
                   </p>
                 </div>
               </div>
             </div>
             
-            {errors.committeePreferences && (
+            {errors.countryPreferences && (
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
                 <div className="flex">
                   <div className="flex-shrink-0">
                     <AlertCircle className="h-5 w-5 text-red-600" />
                   </div>
                   <div className="ml-3">
-                    <p className="text-sm text-red-700">
-                      {errors.committeePreferences}
+                    <p className="text-sm text-red-700" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+                      {errors.countryPreferences}
                     </p>
                   </div>
                 </div>
               </div>
             )}
             
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Committee
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Level
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Available
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Delegates
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {availableCommittees.map((committee) => (
-                    <tr key={committee.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{committee.name}</div>
-                        <div className="text-sm text-gray-500">{committee.id.toUpperCase()}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                          ${committee.level === 'Beginner' ? 'bg-green-100 text-green-800' : 
-                            committee.level === 'Intermediate' ? 'bg-blue-100 text-blue-800' : 
-                            'bg-purple-100 text-purple-800'}`}
-                        >
-                          {committee.level}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {committee.available} of {committee.seats}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <input
-                          type="number"
-                          min="0"
-                          max={committee.available}
-                          value={formData.committeePreferences[committee.id] || ''}
-                          onChange={(e) => handleCommitteeChange(committee.id, e.target.value)}
-                          className="w-16 px-2 py-1 border border-gray-300 rounded-md"
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="space-y-4">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <div key={num}>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Country Preference {num} {num === 1 && <span className="text-red-500">*</span>}
+                  </label>
+                  <select
+                    value={formData.countryPreferences[`preference${num}`]}
+                    onChange={(e) => handleCountryPreferenceChange(`preference${num}`, e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                  >
+                    <option value="">Please select</option>
+                    {availableCountries.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ))}
+            </div>
+            
+            <div>
+              <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700 mb-1">
+                Additional Information
+              </label>
+              <p className="text-sm text-gray-500 mb-2">
+                Indicate whether you require additional delegations with preferences.
+              </p>
+              <textarea
+                id="additionalInfo"
+                name="additionalInfo"
+                rows="4"
+                value={formData.additionalInfo}
+                onChange={handleChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Please provide any additional information about your delegation preferences..."
+              ></textarea>
             </div>
           </div>
         );
@@ -481,17 +559,17 @@ const RegistrationPage = () => {
       case 5:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">Payment Information</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>Payment Information</h3>
             
-            <div className="bg-blue-50 border border-blue-200 rounded-md p-4 mb-6">
+            <div className="border rounded-md p-4 mb-6" style={{ backgroundColor: '#F8F9FB', borderColor: '#D4D8E8' }}>
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <Info className="h-5 w-5 text-blue-600" />
+                  <Info className="h-5 w-5" style={{ color: '#3C5898' }} />
                 </div>
                 <div className="ml-3">
-                  <p className="text-sm text-blue-700">
+                  <p className="text-sm" style={{ color: '#29487D', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                     Please select your preferred payment method. Payment will be due within 14 days of registration.
-                    You will receive an invoice and payment instructions by email.
+                    You will receive payment instructions by email.
                   </p>
                 </div>
               </div>
@@ -507,24 +585,12 @@ const RegistrationPage = () => {
                   <input
                     type="radio"
                     name="paymentMethod"
-                    value="creditCard"
-                    checked={formData.paymentMethod === 'creditCard'}
+                    value="cash"
+                    checked={formData.paymentMethod === 'cash'}
                     onChange={handleChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500"
                   />
-                  <span className="ml-2 text-sm text-gray-700">Credit Card</span>
-                </label>
-                
-                <label className="flex items-center">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="schoolPurchaseOrder"
-                    checked={formData.paymentMethod === 'schoolPurchaseOrder'}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">School Purchase Order</span>
+                  <span className="ml-2 text-sm text-gray-700">Cash</span>
                 </label>
                 
                 <label className="flex items-center">
@@ -549,11 +615,7 @@ const RegistrationPage = () => {
               <h4 className="font-medium mb-3">Registration Summary</h4>
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">School Registration Fee:</span>
-                  <span className="font-medium">${calculateFees().schoolFee}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Delegate Fees ({formData.delegationSize} × ${formData.earlyRegistration ? '25' : '35'}):</span>
+                  <span className="text-gray-600">Delegate Fees ({formData.delegationSize} × $50):</span>
                   <span className="font-medium">${calculateFees().delegateFee}</span>
                 </div>
                 <div className="flex justify-between text-lg font-bold pt-2 border-t">
@@ -573,7 +635,7 @@ const RegistrationPage = () => {
                 rows="3"
                 value={formData.specialAccommodations}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Please list any special accommodations, dietary restrictions, or accessibility needs."
               ></textarea>
             </div>
@@ -583,7 +645,7 @@ const RegistrationPage = () => {
       case 6:
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-bold">Review & Submit</h3>
+            <h3 className="text-xl font-bold" style={{ color: '#29487D' }}>Review & Submit</h3>
             
             <div className="bg-gray-50 rounded-lg p-6 space-y-6">
               <div>
@@ -596,10 +658,6 @@ const RegistrationPage = () => {
                   <div>
                     <p className="text-sm text-gray-500">School Phone</p>
                     <p className="font-medium">{formData.schoolPhone}</p>
-                  </div>
-                  <div className="md:col-span-2">
-                    <p className="text-sm text-gray-500">School Address</p>
-                    <p className="font-medium">{formData.schoolAddress}</p>
                   </div>
                 </div>
               </div>
@@ -619,41 +677,40 @@ const RegistrationPage = () => {
                     <p className="text-sm text-gray-500">Phone</p>
                     <p className="font-medium">{formData.advisorPhone}</p>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Emergency Contact</p>
-                    <p className="font-medium">{formData.advisorEmergencyContact}</p>
-                  </div>
+                  {formData.advisorEmergencyContact && (
+                    <div>
+                      <p className="text-sm text-gray-500">Emergency Contact</p>
+                      <p className="font-medium">{formData.advisorEmergencyContact}</p>
+                    </div>
+                  )}
                 </div>
               </div>
               
               <div className="pt-4 border-t border-gray-200">
                 <h4 className="font-medium text-lg mb-3">Delegation</h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                  <div>
-                    <p className="text-sm text-gray-500">Delegation Size</p>
-                    <p className="font-medium">{formData.delegationSize} delegates</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Registration Type</p>
-                    <p className="font-medium">{formData.earlyRegistration ? 'Early Registration' : 'Regular Registration'}</p>
-                  </div>
+                <div className="mb-4">
+                  <p className="text-sm text-gray-500">Delegation Size</p>
+                  <p className="font-medium">{formData.delegationSize} delegates</p>
                 </div>
                 
-                <h5 className="font-medium mb-2">Committee Allocations</h5>
-                <ul className="space-y-1">
-                  {Object.entries(formData.committeePreferences)
-                    .filter(([_, count]) => parseInt(count) > 0)
-                    .map(([committeeId, count]) => {
-                      const committee = availableCommittees.find(c => c.id === committeeId);
-                      return (
-                        <li key={committeeId} className="flex justify-between">
-                          <span>{committee.name}</span>
-                          <span className="font-medium">{count} {parseInt(count) === 1 ? 'delegate' : 'delegates'}</span>
-                        </li>
-                      );
-                    })
+                <h5 className="font-medium mb-2">Country Preferences</h5>
+                <ol className="space-y-1">
+                  {Object.entries(formData.countryPreferences)
+                    .filter(([_, country]) => country !== '')
+                    .map(([key, country], index) => (
+                      <li key={key} className="flex justify-between">
+                        <span>{index + 1}. {country}</span>
+                      </li>
+                    ))
                   }
-                </ul>
+                </ol>
+                
+                {formData.additionalInfo && (
+                  <div className="mt-4">
+                    <h5 className="font-medium mb-2">Additional Information</h5>
+                    <p className="text-gray-600">{formData.additionalInfo}</p>
+                  </div>
+                )}
               </div>
               
               <div className="pt-4 border-t border-gray-200">
@@ -662,8 +719,7 @@ const RegistrationPage = () => {
                   <div>
                     <p className="text-sm text-gray-500">Payment Method</p>
                     <p className="font-medium">
-                      {formData.paymentMethod === 'creditCard' ? 'Credit Card' : 
-                       formData.paymentMethod === 'schoolPurchaseOrder' ? 'School Purchase Order' : 
+                      {formData.paymentMethod === 'cash' ? 'Cash' : 
                        formData.paymentMethod === 'check' ? 'Check' : ''}
                     </p>
                   </div>
@@ -710,19 +766,18 @@ const RegistrationPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen pt-16" style={{ backgroundColor: '#F8F9FB' }}>
       {/* Header Section */}
-      <section className="bg-blue-800 text-white py-16 px-4">
+      <section className="text-white py-16 px-4" style={{ backgroundColor: '#29487D' }}>
         <div className="container mx-auto max-w-5xl">
-          <h1 className="text-4xl font-bold mb-4">Registration</h1>
-          <p className="text-xl max-w-3xl mb-8">
+          <h1 className="text-4xl font-bold mb-4" style={{ fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>Registration</h1>
+          <p className="text-xl max-w-3xl mb-8" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
             Register your school delegation for GSUMUN 2025. Complete the form below to secure your spot at our conference.
           </p>
           
           {/* Registration Deadline Notice */}
-          <div className="bg-white/10 rounded-lg p-4 inline-block">
-            <p className="font-medium">Early Registration Deadline: September 30, 2025</p>
-            <p>Regular Registration Deadline: October 25, 2025</p>
+          <div className="rounded-lg p-4 inline-block" style={{ backgroundColor: 'rgba(212, 216, 232, 0.2)' }}>
+            <p className="font-medium" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Registration Deadline: October 24, 2025 11:59 PM</p>
           </div>
         </div>
       </section>
@@ -741,20 +796,20 @@ const RegistrationPage = () => {
                   {/* Line between steps */}
                   {step.number < steps.length && (
                     <div 
-                      className={`absolute top-1/2 right-0 w-full h-0.5 -translate-y-1/2 
-                        ${currentStep > step.number ? 'bg-blue-600' : 'bg-gray-300'}`}
+                      className={`absolute top-1/2 right-0 w-full h-0.5 -translate-y-1/2`}
+                      style={{ backgroundColor: currentStep > step.number ? '#3C5898' : '#D4D8E8' }}
                     ></div>
                   )}
                   
                   {/* Step bubble */}
                   <div className="relative flex flex-col items-center">
                     <div 
-                      className={`w-8 h-8 rounded-full flex items-center justify-center z-10
-                        ${currentStep > step.number 
-                          ? 'bg-blue-600 text-white' 
-                          : currentStep === step.number 
-                          ? 'bg-blue-600 text-white' 
-                          : 'bg-gray-200 text-gray-600'}`}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center z-10 text-white font-medium`}
+                      style={{ 
+                        backgroundColor: currentStep >= step.number ? '#3C5898' : '#D4D8E8',
+                        color: currentStep >= step.number ? 'white' : '#6B7280',
+                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+                      }}
                     >
                       {currentStep > step.number ? (
                         <Check size={16} />
@@ -763,9 +818,11 @@ const RegistrationPage = () => {
                       )}
                     </div>
                     <span 
-                      className={`text-xs mt-2 ${
-                        currentStep >= step.number ? 'text-blue-600 font-medium' : 'text-gray-500'
-                      }`}
+                      className={`text-xs mt-2 text-center font-medium`}
+                      style={{ 
+                        color: currentStep >= step.number ? '#3C5898' : '#6B7280',
+                        fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+                      }}
                     >
                       {step.title}
                     </span>
@@ -777,7 +834,7 @@ const RegistrationPage = () => {
           
           {/* Form Card */}
           <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
-            <form onSubmit={handleSubmit}>
+            <div>
               {/* Step Content */}
               {renderStepContent()}
               
@@ -787,7 +844,11 @@ const RegistrationPage = () => {
                   <button
                     type="button"
                     onClick={prevStep}
-                    className="flex items-center gap-1 px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition"
+                    className="flex items-center gap-1 px-4 py-2 border rounded-md text-gray-700 hover:bg-gray-50 transition"
+                    style={{ 
+                      borderColor: '#D4D8E8',
+                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+                    }}
                   >
                     <ChevronLeft size={16} />
                     <span>Previous</span>
@@ -798,64 +859,72 @@ const RegistrationPage = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="ml-auto flex items-center gap-1 px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition"
+                    className="ml-auto flex items-center gap-1 px-4 py-2 rounded-md text-white transition hover:opacity-90"
+                    style={{ 
+                      backgroundColor: '#3C5898',
+                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+                    }}
                   >
                     <span>Next</span>
                     <ChevronRight size={16} />
                   </button>
                 ) : (
                   <button
-                    type="submit"
-                    className="ml-auto px-6 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition"
+                    type="button"
+                    onClick={handleSubmit}
+                    className="ml-auto px-6 py-2 rounded-md text-white transition hover:opacity-90"
+                    style={{ 
+                      backgroundColor: '#3C5898',
+                      fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+                    }}
                   >
                     Submit Registration
                   </button>
                 )}
               </div>
-            </form>
+            </div>
           </div>
           
           {/* Contact Information */}
           <div className="mt-12 text-center">
-            <p className="text-gray-600 mb-2">Need help with registration?</p>
-            <p className="font-medium">Contact us at <a href="mailto:registration@gsumun.org" className="text-blue-600 hover:text-blue-800">registration@gsumun.org</a> or call (404) 555-1234</p>
+            <p className="text-gray-600 mb-2" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Need help with registration?</p>
+            <p className="font-medium" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>Contact us at <a href="mailto:registration@gsumun.org" className="transition hover:opacity-80" style={{ color: '#3C5898' }}>registration@gsumun.org</a> or call (404) 555-1234</p>
           </div>
         </div>
       </section>
       
       {/* FAQ Section */}
-      <section className="py-12 px-4 bg-gray-100">
+      <section className="py-12 px-4" style={{ backgroundColor: '#F0F2F5' }}>
         <div className="container mx-auto max-w-5xl">
-          <h2 className="text-2xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
+          <h2 className="text-2xl font-bold mb-8 text-center" style={{ color: '#29487D', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>Frequently Asked Questions</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-bold text-lg mb-3">What is the registration fee?</h3>
-              <p className="text-gray-600">
-                Registration costs $35 per delegate plus a $50 school registration fee. 
-                Schools that register before September 30, 2025 qualify for the early registration rate of $25 per delegate.
+            <div className="bg-white rounded-lg shadow-sm p-6" style={{ borderTop: '3px solid #3C5898' }}>
+              <h3 className="font-bold text-lg mb-3" style={{ color: '#29487D', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>What is the registration fee?</h3>
+              <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+                Registration costs $50 per delegate. There are no additional school fees or early bird discounts.
               </p>
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-bold text-lg mb-3">What is the cancellation policy?</h3>
-              <p className="text-gray-600">
+            <div className="bg-white rounded-lg shadow-sm p-6" style={{ borderTop: '3px solid #3C5898' }}>
+              <h3 className="font-bold text-lg mb-3" style={{ color: '#29487D', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>What is the cancellation policy?</h3>
+              <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                 Cancellations made 30+ days before the conference receive a full refund minus a $50 processing fee.
                 Cancellations within 30 days receive a 50% refund. No refunds are given for cancellations within 14 days of the conference.
               </p>
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-bold text-lg mb-3">How do committee assignments work?</h3>
-              <p className="text-gray-600">
-                Schools select their committee preferences during registration. Assignments are confirmed once payment is received.
-                Country assignments are distributed approximately 8 weeks before the conference.
+            <div className="bg-white rounded-lg shadow-sm p-6" style={{ borderTop: '3px solid #3C5898' }}>
+              <h3 className="font-bold text-lg mb-3" style={{ color: '#29487D', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>How do country assignments work?</h3>
+              <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
+                Schools select their country preferences during registration. Assignments are confirmed based on preferences and availability
+                once payment is received. Country assignments are distributed approximately 6 weeks before the conference.
               </p>
             </div>
             
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <h3 className="font-bold text-lg mb-3">When are position papers due?</h3>
-              <p className="text-gray-600">
+            <div className="bg-white rounded-lg shadow-sm p-6" style={{ borderTop: '3px solid #3C5898' }}>
+              <h3 className="font-bold text-lg mb-3" style={{ color: '#29487D', fontFamily: "'SF Pro Display Bold', 'Myriad Pro Bold', 'Gill Sans Bold', Arial, sans-serif" }}>When are position papers due?</h3>
+              <p className="text-gray-600" style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
                 Position papers must be submitted by October 15, 2025. Late submissions will be accepted until October 25, 
                 but will not be considered for position paper awards.
               </p>
@@ -863,7 +932,7 @@ const RegistrationPage = () => {
           </div>
           
           <div className="mt-8 text-center">
-            <a href="/faqs" className="text-blue-600 hover:text-blue-800 font-medium">
+            <a href="/faqs" className="font-medium transition hover:opacity-80" style={{ color: '#3C5898', fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}>
               View all FAQs
             </a>
           </div>

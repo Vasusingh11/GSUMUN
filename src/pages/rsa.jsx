@@ -49,13 +49,8 @@ const RsaPage = () => {
         <img
           src="/images/rsa/TRSA3.jpg"
           alt="Raya Siddiqi Award Logo"
-          className="w-40 mx-auto mb-6"
+          className="w-100 mx-auto mb-6"
         />
-
-        <h1 className="text-4xl font-bold mb-2 font-sf-pro-display">The Raya Siddiqi Award</h1>
-        <p className="text-lg text-slate-700 mb-12 font-sf-pro-rounded">
-          for an Outstanding Director
-        </p>
 
         <div className="text-left mb-12">
           <h2 className="text-2xl font-semibold mb-4 font-sf-pro-display">About the Award</h2>

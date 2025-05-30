@@ -6,6 +6,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState({});
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState({});
 
   // Navigation links with dropdowns
   const navLinks = [
@@ -67,18 +68,30 @@ const Navbar = () => {
     };
   }, []);
 
-  // Toggle dropdown for specific menu item
-  const toggleDropdown = (index) => {
+  // Toggle dropdown for desktop
+  const toggleDropdown = (index, e) => {
+    e.stopPropagation();
     setDropdownOpen((prev) => ({
       ...prev,
       [index]: !prev[index]
     }));
   };
 
-  // Close dropdown when clicking outside
+  // Toggle dropdown for mobile
+  const toggleMobileDropdown = (index) => {
+    setMobileDropdownOpen((prev) => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  // Close desktop dropdowns when clicking outside
   useEffect(() => {
-    const handleClickOutside = () => {
-      setDropdownOpen({});
+    const handleClickOutside = (e) => {
+      // Only close if not clicking on dropdown elements
+      if (!e.target.closest('.dropdown-container')) {
+        setDropdownOpen({});
+      }
     };
 
     document.addEventListener('click', handleClickOutside);
@@ -87,25 +100,38 @@ const Navbar = () => {
     };
   }, []);
 
-  // Prevent event propagation to allow clicking inside dropdown
-  const handleDropdownClick = (e) => {
-    e.stopPropagation();
+  // Close mobile menu when route changes
+  const closeMobileMenu = () => {
+    setIsOpen(false);
+    setMobileDropdownOpen({});
   };
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   return (
     <nav 
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'shadow-md py-2' : 'py-4'
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 shadow-md py-2`}
       style={{ 
-        backgroundColor: scrolled ? 'white' : '#29487D',
+        backgroundColor: 'white',
         fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif'
       }}
     >
+
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3" onClick={closeMobileMenu}>
             <img 
               src="/images/gsumun-logo.png" 
               alt="GSUMUN Logo" 
@@ -114,7 +140,7 @@ const Navbar = () => {
             <div 
               className="font-bold text-2xl"
               style={{ 
-                color: scrolled ? '#29487D' : 'white',
+                color: '#29487D' ,
                 fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif",
                 fontWeight: 700
               }}
@@ -128,16 +154,15 @@ const Navbar = () => {
             {navLinks.map((link, index) => (
               <div 
                 key={index} 
-                className="relative"
-                onClick={handleDropdownClick}
+                className="relative dropdown-container"
               >
                 {link.dropdown ? (
                   <div>
                     <button
-                      onClick={() => toggleDropdown(index)}
+                      onClick={(e) => toggleDropdown(index, e)}
                       className="flex items-center space-x-1 text-xl font-semibold transition-all duration-200 px-4 py-2 rounded-md hover:bg-opacity-20"
                       style={{
-                        color: scrolled ? '#29487D' : 'white',
+                        color:'#29487D',
                         ...navFont,
                         fontSize: '18px'
                       }}
@@ -149,7 +174,12 @@ const Navbar = () => {
                       }}
                     >
                       <span>{link.name}</span>
-                      <ChevronDown size={18} />
+                      <ChevronDown 
+                        size={18} 
+                        className={`transition-transform duration-200 ${
+                          dropdownOpen[index] ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
                     
                     {dropdownOpen[index] && (
@@ -179,7 +209,7 @@ const Navbar = () => {
                     to={link.path}
                     className="text-xl font-semibold transition-all duration-200 px-4 py-2 rounded-md"
                     style={{
-                      color: link.highlight ? 'white' : (scrolled ? '#29487D' : 'white'),
+                      color: link.highlight ? 'white' : ('#29487D' ),
                       backgroundColor: link.highlight ? '#3C5898' : 'transparent',
                       ...navFont,
                       fontSize: '18px'
@@ -188,7 +218,7 @@ const Navbar = () => {
                       if (link.highlight) {
                         e.target.style.backgroundColor = '#29487D';
                       } else {
-                        e.target.style.backgroundColor = scrolled ? '#D4D8E8' : 'rgba(60, 88, 152, 0.3)';
+                        e.target.style.backgroundColor = '#D4D8E8' ;
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -208,10 +238,10 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            className="lg:hidden transition-all duration-200 p-2 rounded-md hover:bg-opacity-20"
+            className="lg:hidden transition-all duration-200 p-2 rounded-md hover:bg-opacity-20 z-50"
             onClick={() => setIsOpen(!isOpen)}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = scrolled ? '#D4D8E8' : 'rgba(60, 88, 152, 0.3)';
+              e.target.style.backgroundColor =  '#D4D8E8';
             }}
             onMouseLeave={(e) => {
               e.target.style.backgroundColor = 'transparent';
@@ -227,114 +257,82 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={`lg:hidden fixed inset-0 z-50 bg-white transition-transform duration-300 ease-in-out transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-        style={{ fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif' }}
-      >
-        <div className="flex justify-between items-center p-4" style={{ backgroundColor: '#29487D' }}>
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/images/gsumun-logo.png" 
-              alt="GSUMUN Logo" 
-              className="h-12 w-12 object-contain rounded-full bg-white bg-opacity-20"
-            />
-            <div 
-              className="font-bold text-2xl text-white" 
-              style={{ 
-                fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif", 
-                fontWeight: 700 
-              }}
-            >
-              GSUMUN
+      {isOpen && (
+        <div
+          className="lg:hidden fixed inset-0 z-40 bg-white overflow-y-auto"
+          style={{ 
+            fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
+            paddingTop: '80px' // Account for fixed header
+          }}
+        >
+          <div className="px-4 pb-6">
+            <div className="flex flex-col space-y-2">
+              {navLinks.map((link, index) => (
+                <div key={index} className="border-b border-gray-100 last:border-b-0">
+                  {link.dropdown ? (
+                    <div>
+                      <button
+                        onClick={() => toggleMobileDropdown(index)}
+                        className="flex items-center justify-between w-full text-left py-4 px-2 transition-all duration-200 hover:bg-gray-50 rounded-md"
+                        style={{ 
+                          color: '#29487D',
+                          ...navFont,
+                          fontSize: '18px'
+                        }}
+                      >
+                        <span>{link.name}</span>
+                        <ChevronRight 
+                          size={18} 
+                          className={`transition-transform duration-200 ${
+                            mobileDropdownOpen[index] ? 'rotate-90' : ''
+                          }`}
+                        />
+                      </button>
+                      
+                      {mobileDropdownOpen[index] && (
+                        <div className="ml-4 pb-2 space-y-1">
+                          {link.dropdown.map((dropdownItem, dropdownIndex) => (
+                            <NavLink
+                              key={dropdownIndex}
+                              to={dropdownItem.path}
+                              className="block py-3 px-4 rounded-md transition-all duration-200 hover:bg-gray-50"
+                              style={{ 
+                                color: '#29487D',
+                                fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
+                                fontSize: '16px'
+                              }}
+                              onClick={closeMobileMenu}
+                            >
+                              {dropdownItem.name}
+                            </NavLink>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <NavLink
+                      to={link.path}
+                      className={`block py-4 px-2 rounded-md transition-all duration-200 hover:bg-gray-50 ${
+                        link.highlight ? 'mx-2 my-2' : ''
+                      }`}
+                      style={{
+                        color: link.highlight ? 'white' : '#29487D',
+                        backgroundColor: link.highlight ? '#3C5898' : 'transparent',
+                        ...navFont,
+                        fontSize: '18px',
+                        textAlign: link.highlight ? 'center' : 'left'
+                      }}
+                      onClick={closeMobileMenu}
+                    >
+                      {link.name}
+                    </NavLink>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="p-2 rounded-md transition-all duration-200 hover:bg-blue-700"
-          >
-            <X size={26} className="text-white" />
-          </button>
         </div>
-        <div className="p-4">
-          <div className="flex flex-col space-y-3">
-            {navLinks.map((link, index) => (
-              <div key={index} className="py-2">
-                {link.dropdown ? (
-                  <div>
-                    <button
-                      onClick={() => toggleDropdown(index)}
-                      className="flex items-center justify-between w-full text-left text-xl font-semibold py-3 px-4 rounded-md transition-all duration-200 hover:bg-gray-100"
-                      style={{ 
-                        color: '#29487D',
-                        ...navFont,
-                        fontSize: '20px'
-                      }}
-                    >
-                      <span>{link.name}</span>
-                      {dropdownOpen[index] ? (
-                        <ChevronDown size={18} />
-                      ) : (
-                        <ChevronRight size={18} />
-                      )}
-                    </button>
-                    
-                    {dropdownOpen[index] && (
-                      <div className="ml-4 mt-2 pl-4 flex flex-col space-y-2" style={{ borderLeft: '2px solid #D4D8E8' }}>
-                        {link.dropdown.map((dropdownItem, dropdownIndex) => (
-                          <NavLink
-                            key={dropdownIndex}
-                            to={dropdownItem.path}
-                            className="py-2 px-3 text-lg rounded-md transition-all duration-200 hover:bg-gray-100"
-                            style={{ 
-                              color: '#29487D',
-                              fontFamily: 'SF Pro Display, Myriad Pro, Helvetica Neue, Gill Sans, Arial, sans-serif',
-                              fontSize: '18px'
-                            }}
-                            onClick={() => setIsOpen(false)}
-                          >
-                            {dropdownItem.name}
-                          </NavLink>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <NavLink
-                    to={link.path}
-                    className="block py-3 px-4 text-xl font-semibold rounded-md transition-all duration-200"
-                    style={{
-                      color: link.highlight ? 'white' : '#29487D',
-                      backgroundColor: link.highlight ? '#3C5898' : 'transparent',
-                      ...navFont,
-                      fontSize: '20px',
-                      textAlign: link.highlight ? 'center' : 'left'
-                    }}
-                    onMouseEnter={(e) => {
-                      if (link.highlight) {
-                        e.target.style.backgroundColor = '#29487D';
-                      } else {
-                        e.target.style.backgroundColor = '#D4D8E8';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (link.highlight) {
-                        e.target.style.backgroundColor = '#3C5898';
-                      } else {
-                        e.target.style.backgroundColor = 'transparent';
-                      }
-                    }}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </NavLink>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      )}
     </nav>
   );
 };

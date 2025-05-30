@@ -305,7 +305,7 @@ const GSUMUNAboutPage = () => {
               fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
             }}
           >
-            The Georgia State University Model United Nations (GSUMUN) is dedicated to fostering critical thinking, diplomatic skills, and global awareness among students. We strive to create an environment where future leaders can engage with complex international issues, develop negotiation skills, and build lasting connections with peers from diverse backgrounds.
+            Georgia State University Model United Nations (GSUMUN) is dedicated to fostering critical thinking, diplomatic skills, and global awareness among students. We strive to create an environment where future leaders can engage with complex international issues, develop negotiation skills, and build lasting connections with peers from diverse backgrounds.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -484,26 +484,29 @@ const GSUMUNAboutPage = () => {
         </section>
 
         {/* Join Community Section */}
-        <section 
-          className="text-white rounded-lg p-8 text-center"
-          style={{ backgroundColor: '#29487D' }}
-        >
+        <section className="bg-white rounded-lg shadow-md p-8 mb-12">
           <h2 
-            className="text-3xl font-bold mb-6"
-            style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
+            className="text-3xl font-bold text-center mb-8"
+            style={{ 
+              color: '#29487D',
+              fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+            }}
           >
             Join Our Community
           </h2>
           <p 
-            className="text-xl mb-4 max-w-3xl mx-auto"
-            style={{ fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif" }}
+            className="text-lg leading-relaxed mb-8 text-center max-w-4xl mx-auto"
+            style={{ 
+              color: '#374151',
+              fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
+            }}
           >
             Whether you're a seasoned delegate or completely new to Model UN, GSUMUN offers opportunities for growth, learning, and leadership. Our members go on to careers in diplomacy, law, business, and public service, carrying with them the skills and perspectives gained through their Model UN experience.
           </p>
           <p 
-            className="text-lg"
+            className="text-center max-w-3xl mx-auto"
             style={{ 
-              color: '#D4D8E8',
+              color: '#6B7280',
               fontFamily: "'SF Pro Display', 'Myriad Pro', 'Helvetica Neue', 'Gill Sans', Arial, sans-serif"
             }}
           >

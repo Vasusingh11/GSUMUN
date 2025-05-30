@@ -13,17 +13,16 @@ const GSUMUNLogo = ({ className, isScrolled, size = 'default' }) => {
 
   return (
     <div 
-      className={`${sizeClass} ${className} rounded-full flex items-center justify-center overflow-hidden`}
-      style={{ 
-        backgroundColor: isScrolled ? '#29487D' : 'rgba(255, 255, 255, 0.2)'
-      }}
-    >
-      <img 
-        src="/images/gsumun-logo.png" 
-        alt="GSUMUN Logo"
-        className="w-full h-full object-contain"
-      />
-    </div>
+    className={`${sizeClass} ${className} rounded-full flex items-center justify-center overflow-hidden`}
+    style={{ backgroundColor: '#ffffff' }}
+  >
+    <img 
+      src="/images/gsumun-logo.png" 
+      alt="GSUMUN Logo"
+      className="w-full h-full object-contain"
+    />
+  </div>
+
   );
 };
 
